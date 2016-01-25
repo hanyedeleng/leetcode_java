@@ -24,5 +24,9 @@ public class Solution {
     }
 }
 
+ont line solution:
+return num>9?(num%9==0?9:num%9):num;
+
+
 Tips: remember to test the result before submit. 
     ******
