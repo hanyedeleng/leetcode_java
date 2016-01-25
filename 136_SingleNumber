@@ -1,0 +1,48 @@
+Given an array of integers, every element appears twice except for one. Find that single one.
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+
+Thoghts: HashMap, put every element in it, then find. Or sort then find it?
+
+Solution:
+public class Solution {
+    public int singleNumber(int[] numbers) {
+        if (numbers.length < 3) {
+            return numbers[0];
+        }
+        Arrays.sort(numbers);
+        //System.out.println(Arrays.toString(numbers));
+        int result=numbers[numbers.length-1];
+        for (int i=0; i<numbers.length-1; i=i+2){
+            if (numbers[i] != numbers[i+1]) {
+                result = numbers[i];
+                break;
+            }
+        }
+        return result;
+    }
+}
+
+The solution by others:
+public int singleNumber(int[] nums) {
+    int result = 0;
+    for(int i : nums) {
+        result ^= i;
+    }
+    return result;
+}
+// Java bitwise operator
+//a = 0011 1100
+//b = 0000 1101
+//a^b = 0011 0001
+
+Tips:
+1. Arrays.sort(numbers), remember the keyword is "Arrays"
+2. public int ***, method should have a return statement, and the local variable result should initilized.
+3. how to print array:System.out.println(Arrays.toString(numbers));
+4. pay attention to the case your code can't handle. Suppose the element is the last one, and the solution is initialize
+  the result equal the value of the last element of the sorted array.
+
+
+
+
