@@ -33,10 +33,10 @@ public int shortestDistance(String[] words, String word1, String word2) {
     }
     
     if (index.size()>1) {
-      result = index(index.size()-1) - index(0);
+      result = index.get(index.size()-1) - index(0);
     }
     for (int k=0; k<index.size-1;k++) {
-      result = Math.min(index[i+1]-index[i], result);
+      result = Math.min(index.get[i+1]-index[i], result);
     }
   }
 
@@ -72,3 +72,5 @@ public class Solution {
         return minDistance;
     }
 }
+
+Tips: ArrayList get element. myList.get(index_num);
