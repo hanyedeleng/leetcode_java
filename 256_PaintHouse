@@ -1,0 +1,77 @@
+There are a row of n houses, each house can be painted with one of the three colors: red, blue or green. 
+The cost of painting each house with a certain color is different. 
+You have to paint all the houses such that no two adjacent houses have the same color.
+The cost of painting each house with a certain color is represented by a n x 3 cost matrix. 
+For example, costs0 is the cost of painting house 0 with color red; 
+costs1 is the cost of painting house 1 with color green, and so on... Find the minimum cost to paint all houses.
+Note: All costs are positive integers.
+
+
+solution:
+public class Solution {
+  public int minCost(int[][] costs) {
+    if (costs.length==0) {
+      return 0;
+    }
+    int c_r = costs[0][0];
+    int c_g = costs[0][1];
+    int c_b = costs[0][2];
+    if (costs.length==1) {
+      return Math.min(c_r,Math.min(c_g,c_b));
+    }
+    
+    int i = 1;
+    int[] allCost = new int[6];
+    if (costs.length==2) {
+      allCost[0] = c_r + costs[i][1];
+      allCost[1] = c_r + costs[i][2];
+      allCost[2] = c_g + costs[i][0];
+      allCost[3] = c_g + costs[i][2];
+      allCost[4] = c_b + costs[i][0];
+      allCost[5] = c_b + costs[i][1];
+      return min(allCost);
+    }
+    i++;
+    while (i<costs.length) {
+      allCost[0] = allCost[0] + costs[i][1];
+      allCost[1] = allCost[1] + costs[i][2];
+      allCost[2] = allCost[2] + costs[i][0];
+      allCost[3] = allCost[3] + costs[i][2];
+      allCost[4] = allCost[4] + costs[i][0];
+      allCost[5] = allCost[5] + costs[i][1];
+      i++;
+    }
+    return min(allCost);
+  
+  }
+  
+  public int Min(int[6] value) {
+    int c1 = Math.min(value[0],value[1]);
+    int c2 = Math.min(value[2],value[3]);
+    int c3 = Math.min(value[4],value[5]);
+    
+    return Math.min(c1,Math.min(c2,c3));
+  }
+}
+
+Other's solution:
+public class Solution {
+public int minCost(int[][] costs) {
+    if(costs.length==0) return 0;
+    int lastR = costs[0][0];
+    int lastG = costs[0][1];
+    int lastB = costs[0][2];
+    for(int i=1; i<costs.length; i++){
+        int curR = Math.min(lastG,lastB)+costs[i][0];
+        int curG = Math.min(lastR,lastB)+costs[i][1];
+        int curB = Math.min(lastR,lastG)+costs[i][2];
+        lastR = curR;
+        lastG = curG;
+        lastB = curB;
+    }
+    return Math.min(Math.min(lastR,lastG),lastB);
+}
+
+Tips:
+  1. dynamic programming, don't be afraid.
+  2. list the simplest situation, then find the common
