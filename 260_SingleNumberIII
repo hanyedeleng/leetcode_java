@@ -40,8 +40,44 @@ public class Solution {
     }
 }
 
+Other's solution:
+        public class Solution {
+            public int[] singleNumber(int[] nums) {
+                HashSet<Integer> h = new HashSet<>();
+                for(int n : nums){
+                    if(h.contains(n)) h.remove(n);
+                    else h.add(n);
+                }
+                Object[] t =h.toArray();
+                int[] result = new int[2];
+                result[0] = (int)t[0];
+                result[1] = (int)t[1];
+                return result;
+            }
+        }
+
+        public class Solution {
+            public int[] singleNumber(int[] nums) {
+                Arrays.sort(nums);
+                int len = nums.length;
+                int[] result = new int[2];
+                for(int i = 0; i < len; ){
+                    if(i != len - 1 && nums[i] == nums[i+1]) i += 2;
+                    else{
+                        if(result[0] == 0) result[0] = nums[i];
+                        else result[1] = nums[i];
+                        i++;
+                    }
+                }
+                return result;
+            }
+        }
+
+
 Tips:
   1. consider the effect of the first if ==null effect of  ==1.
   2. java HashMap  keySet
   3. each element of Set, if the set element's type is int, then use Integer to find each element.
-
+  4. don't forget put nums[i], not i in the HashMap
+  5. HashMap.remove(key);
+  
