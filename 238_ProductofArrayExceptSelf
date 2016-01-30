@@ -1,0 +1,75 @@
+Given an array of n integers where n > 1, nums, return an array output such that output[i] is equal to the product of all the elements 
+of nums except nums[i].
+Solve it without division and in O(n).
+For example, given [1,2,3,4], return [24,12,8,6].
+Follow up:
+Could you solve it with constant space complexity? 
+(Note: The output array does not count as extra space for the purpose of space complexity analysis.)
+
+
+Solution:
+public class Solution {
+    public int[] productExceptSelf(int[] nums) {
+      //n>1, dont' need this
+      //if(nums==null) {return null}
+      //find the numbers of 0, very important, numofzero=0,numofzero=1,numofzero>1
+      
+      int numofZero=0;
+      int positionZero=0;
+      int production = 1;
+      for (int i=0; i<nums.length; i++) {
+        if(nums[i] == 0) {
+          positionZero = i;
+          numofZero++;
+          nums[i] = 1;
+        }
+        production *= nums[i];
+      }
+      
+      if (numofZero == 0) {
+        for(int j=0; j<nums.length; j++) {
+          nums[j] = production/nums[j];
+        }
+      }
+      if (numofZero == 1) {
+        for (int j=0; j<nums.length; j++) {
+          nums[j] = 0;
+        }
+        nums[positionZero] = production;
+      }
+      
+      if (numofZero>=2) {
+        for (int j=0; j<nums.length; j++) {
+          nums[j]=0;
+        }
+      }
+      
+      return nums;
+    }
+}
+
+other's solution:
+The idea is to traverse twice. First traversal will get the product before current element. 
+Second traversal will start from the end, and get the product after current element.
+public int[] productExceptSelf(int[] nums) {
+            int len = nums.length;
+            int[] res = new int[len];
+            if(len == 0 ){
+                return res;
+            }
+            res[0] = 1;
+            for(int i=1; i<len; i++){
+                res[i] = res[i-1]*nums[i-1];
+            }
+            int rearProduct = 1;
+            for(int j=len-1; j>=0; j--){
+                res[j] = res[j] *rearProduct;
+                rearProduct *= nums[j];
+            }
+            return res;
+        }
+        
+
+Tips:
+1. situation numofZero, 0 , 1, >=2
+2.
