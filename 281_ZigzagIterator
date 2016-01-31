@@ -1,0 +1,111 @@
+Suppose you have a Iterator class with has_next() and get_next() methods.
+Please design and implement a ZigzagIterator class as a wrapper of two iterators.
+For example, given two iterators:
+i0 = [1,2,3,4]
+i1 = [5,6]
+ZigzagIterator it(i0, i1);
+
+while(it.has_next()) {
+    print(it.get_next());
+}
+The output of the above pseudocode would be [1,5,2,6,3,4].
+
+
+public class ZigzagIterator {
+  private Iterator first;
+  private Iterator second;
+  private Iterator it;
+  
+  public ZigzagIterator(Iterator i1, Iterator i2) {
+    this.first = i1;
+    this.second = i2;
+    
+    int len1=i1.length;
+    int len2=i2.length;
+    if (len1==0 && len2==0) {
+      it = new Iterator();
+    }
+    
+    if (len1==0) {
+      it = i2;
+    }
+    
+    if (len2==0) {
+      it = i1;
+    }
+    
+    while(len1!=0&&len2!=0) {
+      it = len1.get_next();
+      it = len2.get_next();
+    }
+    
+  }
+  
+  public boolean has_next() {
+    if(it.has_next()) {
+      return true;
+    }
+    return false;
+  }
+  
+  public int get_next() {
+    if(it.has_next == true) {
+      return it.get_next;
+    }
+  }
+}
+
+
+Other's solution:
+Note: For Java solution we will use JDK's Iterator class, so the methods would be hasNext() and next().
+
+public class ZigzagIterator {  
+    Iterator i0, i1;  
+    Iterator it;  
+    public ZigzagIterator(Iterator i0, Iterator i1) {  
+        this.i0 = i0; this.i1 = i1;  
+        this.it = i0.hasNext()? i0:i1;  
+    }  
+      
+    public boolean has_next() {  
+        return it.hasNext();  
+    }  
+      
+    public int get_next() {  
+        int val = (Integer)it.next();  
+        if(it == i0 && i1.hasNext())  
+            it = i1;  
+        else if(it == i1 && i0.hasNext())  
+            it = i0;  
+        return val;  
+    }  
+} 
+
+
+Other's:
+Simple Java solution for K-vector
+Uses a linkedlist to store the iterators in different vectors. Every time we call next(), we pop an element from the list, 
+and re-add it to the end to cycle through the lists.
+
+public class ZigzagIterator {
+    LinkedList<Iterator> list;
+    public ZigzagIterator(List<Integer> v1, List<Integer> v2) {
+        list = new LinkedList<Iterator>();
+        if(!v1.isEmpty()) list.add(v1.iterator());
+        if(!v2.isEmpty()) list.add(v2.iterator());
+    }
+
+    public int next() {
+        Iterator poll = list.remove();
+        int result = (Integer)poll.next();
+        if(poll.hasNext()) list.add(poll);
+        return result;
+    }
+
+    public boolean hasNext() {
+        return !list.isEmpty();
+    }
+}
+
+
+Tip:
