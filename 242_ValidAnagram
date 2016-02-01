@@ -1,0 +1,160 @@
+Given two strings s and t, write a function to determine if t is an anagram of s.
+For example,
+s = "anagram", t = "nagaram", return true.
+s = "rat", t = "car", return false.
+Note:
+You may assume the string contains only lowercase alphabets.
+Follow up:
+What if the inputs contain unicode characters? How would you adapt your solution to such case?
+
+public class Solution{
+  public boolean isAnagram(String s, String t) {
+    if(s==null && t==null) {
+      return true;
+    } 
+    if(s.length() == t.length()) {
+      HashSet s_set = new HashSet<>();
+      HashSet t_set = new HashSet<>();
+      for (int i=0;i<s.length();i++) {
+        s_set.add(s.charAt(i));
+        t_set.add(t.charAt(i));
+      }
+      if (s_set.equals(t_set)) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
+//this method can't determine "aaca" "ccac", the number of characters maters
+public class Solution{
+  public boolean isAnagram(String s, String t) {
+    if (s==null && t==null) {
+      return true;
+    }
+    
+    Map<Character, Integer> s_map = new HashMap<>();
+    Map<Character, Integer> t_map = new HashMap<>();
+    
+    if (s.length() == t.length()) {
+      for(int i=0;i<s.length();i++) {
+        if(s_map.containsKey(s.charAt(i))) {
+          int tmp = s_map.get(s.charAt(i));
+          tmp++;
+          s_map.put(s.charAt(i),tmp);
+        }else{
+          s_map.put(s.charAt(i),1);
+        }
+        if(t_map.containsKey(t.charAt(i))) {
+          int tmp = t_map.get(t.charAt(i));
+          tmp++;
+          t_map.put(t.charAt(i),tmp);
+        }else{
+          t_map.put(t.charAt(i),1);
+        }
+      }
+      
+      if (s_map.keySet().equals(t_map.keySet())){
+        for(char c:s_map.keySet()){
+          int i = s_map.get(c);
+          int j = t_map.get(c);
+          if(i!=j) {
+            return false;
+          }
+        }
+        return true;
+      }
+      return false;
+    }
+    
+    return false;
+  }
+}
+
+
+other's solution:
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        int length = s.length();
+        if(length != t.length()) {
+            return false;
+        }
+        char[] str_s = s.toCharArray();
+        char[] str_t = t.toCharArray();
+        int[] mask = new int[256];
+        for(char c : str_s) {
+            mask[c]++;
+        }
+        for(char c : str_t) {
+            if(mask[c] > 0) {
+                mask[c]--;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+
+public class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s == null || t == null) {
+            return false;
+        }
+        char[] sArr = s.toCharArray();
+        char[] tArr = t.toCharArray();
+        Arrays.sort(sArr);
+        Arrays.sort(tArr);
+        return Arrays.equals(sArr, tArr);
+    }
+}
+
+public class Solution {
+public boolean isAnagram(String s, String t) {
+    if(s==null&&t==null) return true;
+    char[] sa=new char[26];
+    char[] ta=new char[26];
+    char[] sc=s.toCharArray();
+    char[] tc=t.toCharArray();
+    for(char c:sc){
+        sa[c-'a']++;
+    }
+    for(char c:tc){
+        ta[c-'a']++;
+    }
+    return new String(sa).equals(new String(ta));
+}
+
+public boolean isAnagram(String s, String t) {
+
+    if(s.length() != t.length()) {
+        return false;
+    }
+
+    int[] count = new int[26];
+
+    for(int i = 0; i < s.length(); i++) {
+        count[s.charAt(i) - 'a']++;
+        count[t.charAt(i) - 'a']--;
+    }
+
+    for(int x : count) {
+        if(x != 0) return false;
+    }
+
+    return true;
+}
+
+
+Tips:
+  1. string length: s.length()
+  2. HashSet s_set:
+  3. s.charAt(i)
+  4. s_set.add();
+  5. s.set.equals(t_set)
+  6. t. hashmap.containsKey()
+  7. Map<Character, Integer>
+  8. compare the set keys, use two int variable then compare!!!!!!!!!!!***** line 59, line 60
+  
+  
+  
