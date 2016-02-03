@@ -1,0 +1,58 @@
+Given an array nums and a target value k, find the maximum length of a subarray that sums to k. If there isn't one, return 0 instead.
+Example 1:
+Given nums = [1, -1, 5, -2, 3], k = 3,
+return 4. (because the subarray [1, -1, 5, -2] sums to 3 and is the longest)
+Example 2:
+Given nums = [-2, -1, 2, 1], k = 1,
+return 2. (because the subarray [-1, 2] sums to 1 and is the longest)
+Follow Up:
+Can you do it in O(n) time?
+
+public int maxSubArrayLen(int[] nums, int k) {
+    int maxLength = 0;
+    for (int i = 0; i < nums.length; i++) {
+        int sum = 0;
+        for (int j = i; j < nums.length; j++) {
+            if((sum += nums[j]) == k) {
+                int length = j - i + 1;
+                if (length > maxLength) {
+                    maxLength = length;
+                }
+            }
+        }
+    }
+    return maxLength;
+}
+
+
+public int maxSubArrayLen(int[] nums, int k) {
+        if (nums == null || nums.length == 0)
+            return 0;
+        int n = nums.length;
+        for (int i = 1; i < n; i++)
+            nums[i] += nums[i - 1];
+        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        map.put(0, -1); // add this fake entry to make sum from 0 to j consistent
+        int max = 0;
+        for (int i = 0; i < n; i++) {
+            if (map.containsKey(nums[i] - k))
+                max = Math.max(max, i - map.get(nums[i] - k));
+            if (!map.containsKey(nums[i])) // keep only 1st duplicate as we want first index as left as possible
+                map.put(nums[i], i);
+        }
+        return max;
+    }
+    
+    
+    public int maxSubArrayLen(int[] nums, int k) {
+    int sum = 0, max = 0;
+    HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
+    for (int i = 0; i < nums.length; i++) {
+        sum = sum + nums[i];
+        if (sum == k) max = i + 1;
+        else if (map.containsKey(sum - k)) max = Math.max(max, i - map.get(sum - k));
+        if (!map.containsKey(sum)) map.put(sum, i);
+    }
+    return max;
+}
+
