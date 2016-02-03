@@ -1,0 +1,86 @@
+There are n bulbs that are initially off. You first turn on all the bulbs. Then, you turn off every second bulb. 
+On the third round, you toggle every third bulb (turning on if it's off or turning off if it's on). 
+For the nth round, you only toggle the last bulb. Find how many bulbs are on after n rounds.
+Example:
+
+Given n = 3. 
+
+At first, the three bulbs are [off, off, off].
+After first round, the three bulbs are [on, on, on].
+After second round, the three bulbs are [on, off, on].
+After third round, the three bulbs are [on, off, off]. 
+
+So you should return 1, because there is only one bulb is on.
+
+public class Solution {
+    public int bulbSwitch(int n) {
+    if (n==0) return 0;
+    if (n==1) return 1;
+    if (n==2) return 1;
+    
+    int[] bulb_state = new int[n];
+    for(int i=0; i<n;i++) {
+      if(i%2=0) {
+        bulb_state[i] = 1;
+      }else{
+        bulb_state[i] = 0;
+      }
+    }
+    
+    int tmp = 3;
+    while (tmp<=n){
+      for(int i=tmp;i<=n;i=i+tmp) {
+        if(bulb_state[i-1] == 1) {
+          bulb_state[i-1] = 0;
+        }else{
+          bulb_state[i-1] = 1;
+        }
+      }
+      tmp++;
+    }
+    int sum = 0;
+    for (int i=0; i<n; i++) {
+      sum += bulb_state[i];
+    }
+    return sum;
+  }
+}
+time limit
+public class Solution {
+  public int bulbSwitch(int n) {
+    if (n==0) return 0;
+    if (n==1) return 1;
+    if (n==2) return 1;
+  
+    int sum = 1;
+    for (int i = 3; i<=n; i++) {
+      if (numsOfDivisors(i)%2!=0) {
+        sum++;
+      }
+    }
+  }
+  public int numsOfDivisors(int n) {
+    int result = 0;
+    int i = 3;
+    while (i<=n) {
+      if (n%i==0){
+        result++;
+      }
+    }
+    return result;
+  }
+}    
+
+
+other's solution:
+factor of 6: 1,2,3,6 factor of 7: 1,7 factor of 9: 1,3,9
+so all number have even number of factors except square number(e.g: factor of 9:1,3,9). 
+square number must turn on because of odd number of factors(9: turn on at 1st, off at 3rd, on at 9th) 
+other number must turn off(6: turn on at 1st, off at 2nd, on at 3rd, off at 6th) so we only need to
+compute the number of square number less equal than n
+
+public class Solution {
+    public int bulbSwitch(int n) {
+        return (int)Math.sqrt(n);
+    }
+}
