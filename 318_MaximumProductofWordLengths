@@ -1,0 +1,88 @@
+Given a string array words, find the maximum value of length(word[i]) * length(word[j]) where the two words do not share common letters. 
+You may assume that each word will contain only lower case letters. If no such two words exist, return 0.
+
+Example 1:
+Given ["abcw", "baz", "foo", "bar", "xtfn", "abcdef"]
+Return 16
+The two words can be "abcw", "xtfn".
+
+Example 2:
+Given ["a", "ab", "abc", "d", "cd", "bcd", "abcd"]
+Return 4
+The two words can be "ab", "cd".
+
+Example 3:
+Given ["a", "aa", "aaa", "aaaa"]
+Return 0
+No such pair of words.
+
+Solution:
+compare each pair of words
+
+public class Solution {
+    public int maxProduct(String[] words) {
+      int product = 0;
+      if (words.length<2) {
+        return 0;
+      }
+      for (int i=0; i<words.length-1; i++) {
+        for (int j=i+1; j<words.length; j++) {
+          if(!shareCommonLetter(words[i],words[j])) {
+            product = Math.max(product, words[i].length()*words[j].length());
+          }
+        }
+      }
+      
+      return product;
+    }
+    
+    public boolean shareCommonLetter(String s1, String s2){
+      int len1 = s1.length();
+      for(int i=0; i<len1; i++) {
+        if(s2.indexOf(s1.charAt(i)) != -1) {
+          return true;
+        }
+      }
+      return false;
+    }
+}
+
+Time Limit Exceeded
+Other's solution:
+public class Solution {
+    /**
+     * @param words
+     * @return
+     * 
+     *      The soultion is calcuated by doing a product of the length of
+     *         each string to every other string. Anyhow the constraint given is
+     *         that the two strings should not have any common character. This
+     *         is taken care by creating a unique number for every string. Image
+     *         a an 32 bit integer where 0 bit corresponds to 'a', 1st bit
+     *         corresponds to 'b' and so on.
+     * 
+     *         Thus if two strings contain the same character when we do and
+     *         "AND" the result will not be zero and we can ignore that case.
+     */
+    public int maxProduct(String[] words) {
+        int[] checker = new int[words.length];
+        int max = 0;
+        // populating the checker array with their respective numbers
+        for (int i = 0; i < checker.length; i++) {
+            int num = 0;
+            for (int j = 0; j < words[i].length(); j++) {
+                num |= 1 << (words[i].charAt(j) - 'a');
+            }
+            checker[i] = num;
+        }
+
+        for (int i = 0; i < words.length; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if ((checker[i] & checker[j]) == 0) //checking if the two strings have common character
+                    max = Math.max(max, words[i].length() * words[j].length());
+            }
+        }
+        return max;
+    }
+
+}
