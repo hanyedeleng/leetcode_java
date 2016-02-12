@@ -1,0 +1,126 @@
+Given a roman numeral, convert it to an integer.
+Input is guaranteed to be within the range from 1 to 3999.
+
+Roman numerals:
+I 1
+V 5
+X 10
+L 50
+C 100
+D 500
+M 1000
+Rules:
++++--- big small
+---+++ small big
+
+public class Solution {
+    public int romanToInt(String s) {
+      Map<Character, int> map = new HashMap<>();
+      map.put(I,1);
+      map.put(V,5);
+      map.put(X,10);
+      map.put(L,50);
+      map.put(C,100);
+      map.put(D,500);
+      map.put(M,1000);
+      
+      int len = s.length();
+      int result;
+      
+      if(map.get(s.charAt(0)>map.get(s.charAt(1)) {
+        // order decrease
+        int i=0;
+        while(i<len) {
+          switch(s.charAt(i)) {
+            case 'M':
+              result += 1000;
+              break;
+            case 'D':
+              result += 500;
+              break;
+            case 'C':
+              result += 100;
+              break;
+            case 'L':
+              result += 50;
+              break;
+            case 'X':
+              result += 10;
+              break;
+            case 'I':
+              result += 1;
+              break;
+          }
+          i++;
+        }
+      }else{
+        // order increase
+        int j = 0;
+        while (j<len) {
+          if(s.charAt(i) == 'I') {
+            if(s.charAt(i+1) == 'V') {
+              result += 4;
+            }else if(s.charAt(i+1) == 'X') {
+              result += 9;
+            }
+          }
+          if(s.charAt(i) == 'x') {
+            if(s.charAt(i+1) == 'L') {
+              result += 40;
+            }else if(s.charAt(i+1) == 'C') {
+              result += 90;
+            }
+          }
+          if(s.charAt(i) == 'C') {
+            if(s.charAt(i+1) == 'D') {
+              result += 400;
+            }else if(s.charAt(i+1) == 'M') {
+              result += 900;
+            }
+          }
+          j++;
+        }
+      }
+      return result;
+    }
+}
+my solution is too bad......
+
+Other's solution:
+public int romanToInt(String s) {
+    if(s == null || s.length() == 0){
+        return 0;
+    }
+    int pre = charToInt(s.charAt(0));
+    int sum = pre;
+    for(int i = 1; i < s.length(); i++){
+        int cur = charToInt(s.charAt(i));
+        if(pre < cur){
+            sum -= 2*pre;
+        }
+        sum += cur;
+        pre = cur;
+    }
+    return sum;
+}
+
+public int charToInt(char cha){
+    switch(cha){
+        case 'I': return 1;
+        case 'V': return 5;
+        case 'X': return 10;
+        case 'L': return 50;
+        case 'C': return 100;
+        case 'D': return 500;
+        case 'M': return 1000;
+    }
+    return 0;
+
+}
+}
+
+
+Tips:
+1. initialize variable
+2. if statement >, <, =, don't forget any situation
+3
