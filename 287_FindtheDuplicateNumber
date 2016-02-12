@@ -1,0 +1,67 @@
+Given an array nums containing n + 1 integers where each integer is between 1 and n (inclusive), 
+prove that at least one duplicate number must exist. Assume that there is only one duplicate number, find the duplicate one.
+
+Note:
+You must not modify the array (assume the array is read only).
+You must use only constant, O(1) extra space.
+Your runtime complexity should be less than O(n2).
+There is only one duplicate number in the array, but it could be repeated more than once.
+
+Solution:
+public class Solution {
+    public int findDuplicate(int[] nums) {
+      Map<Integer,Integer> map = new HashMap<>();
+      if(nums.length<2) {
+        return 0;
+      }
+      
+      for(int i=0;i<nums.length;i++) {
+        if(map.get(nums[i])!=null) {
+          return nums[i];
+        }
+        map.put(nums[i],1);
+      }
+      return 0;
+    }
+}
+This solution is not O(1) space
+other's solution:
+Java O(1)space using Binary-Search
+public int findDuplicate(int[] nums) {
+    int low = 1, high = nums.length - 1;
+    while (low <= high) {
+        int mid = (int) (low + (high - low) * 0.5);
+        int cnt = 0;
+        for (int a : nums) {
+            if (a <= mid) ++cnt;
+        }
+        if (cnt <= mid) low = mid + 1;
+        else high = mid - 1;
+    }
+    return low;
+}
+
+Java O(n) time and O(1) space solution. Similar to find loop in linkedlist.
+public int findDuplicate(int[] nums) {
+    int slow = 0, fast = 0;
+    do{
+        slow = nums[slow];
+        fast = nums[nums[fast]];
+    }while(slow != fast);
+    slow = 0;
+    while(slow != fast){
+        slow = nums[slow];
+        fast = nums[fast];
+    }
+    return slow;
+}
+
+
+
+
+
+Tips:
+1. don't need to break if there is a return statement ahead.
+2. pay attention to which value you want to use, the index i, or array value a[i]
+3. HashMap<Integer,Integer> default value is null!!!!!!
+
