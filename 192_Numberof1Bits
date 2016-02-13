@@ -1,0 +1,70 @@
+Write a function that takes an unsigned integer and returns the number of ’1' bits it has (also known as the Hamming weight).
+For example, the 32-bit integer ’11' has binary representation 00000000000000000000000000001011, so the function should return 3.
+
+Solution:
+
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+      int result=0;
+      if(n<2) {
+        return n;
+      }
+      while(n>1) {
+        if(n%2==1) {
+          result++;
+        }
+        n = n/2;
+      }
+      result++;
+      return result;
+    }
+}
+//error:
+Input:
+  2147483648 (10000000000000000000000000000000)
+Output:
+-2147483648
+Expected:
+1
+
++++++++++++++++++++++++
+
+
+other's solution:
+public int hammingWeight(int n) {
+    String integer = Integer.toBinaryString(n);
+    integer = integer.replaceAll("0","");
+    return integer.length();
+}
+
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int ans = 0;
+        while (n != 0) {
+            ans += n & 1;
+            n >>>= 1;
+        }
+        return ans;
+    }
+}
+
+public int hammingWeight(int n) {
+        int count = 0;
+        if(n<0) { // meaning n is overflowed! 
+            count++; //leading bit must be 1 for negative value
+            n = n & Integer.MAX_VALUE; // and this value -> 01111111111111111111111111111111, to mask off the leading 1
+        }
+        while(n>0) {
+            if(n%2!=0)
+                count++;
+            n /= 2;
+        }
+        return count;
+    }
+
+Tips: 2^31=2147483648
+1. In Java, Integer.MAXVALUE = 2147483647, Integer.MINVALUE = -2147483648
+When int overflowed, it counts from -2147483648, e.g. unsigned int: 2147483648 -> int: -2147483648.
+
