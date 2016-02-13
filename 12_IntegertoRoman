@@ -1,0 +1,154 @@
+Given an integer, convert it to a roman numeral.
+Input is guaranteed to be within the range from 1 to 3999.
+
+I 1
+V 5
+X 10
+L 50
+C 100
+D 500
+M 1000
+
+Solution:
+
+public class Solution {
+    public String intToRoman(int num) {
+      String result = "";
+      
+      while(num>=1000) {
+        result += "M";
+        num -= 1000;
+      }
+      while(num>=500) {
+        if(num>=900) {
+          result += "CM";
+          num -= 900;
+        }else if(num>=800) {
+          result += "DCCC";
+          num -= 800;
+        }else if(num>=700) {
+          result += "DCC";
+          num -= 700;
+        }else if(num>=600) {
+          result += "DC";
+          num -= 600;
+        }else if(num>=500) {
+          result += "D";
+          num -= 500;
+        }
+      }
+      while(num>=100) {
+        if(num>=400) {
+          result += "CD";
+          num -= 400;
+        }else if(num>=300) {
+          result += "CCC";
+          num -= 300;
+        }else if(num>=200) {
+          result += "CC";
+          num -= 200;
+        }else if(num>=100) {
+          result += "C";
+          num -= 100;
+        }
+      }
+      
+      while(num>=50) {
+        if(num>=90) {
+          result += "XC";
+          num -= 90;
+        }else if(num>=80) {
+          result += "LXXX";
+          num -= 80;
+        }else if(num>=70) {
+          result += "LXX";
+          num -= 70;
+        }else if(num>=60) {
+          result += "LX";
+          num -= 60;
+        }else if(num>=50) {
+          result += "L";
+          num -= 50;
+        }
+      }
+      
+      while(num>=10) {
+        if(num>=40) {
+          result += "XL";
+          num -= 40;
+        }else if(num>=30) {
+          result += "XXX";
+          num -= 30;
+        }else if(num>=20) {
+          result += "XX";
+          num -= 20;
+        }else if(num>=10) {
+          result += "X";
+          num -= 10;
+        }
+      }
+      
+      while (num>=1) {
+        if(num>=9) {
+          result += "IX";
+          num -= 9;
+        }else if(num>=8){
+          result += "VIII";
+          num -= 8;
+        }else if(num>=7){
+          result += "VII";
+          num -= 7;
+        }else if(num>=6){
+          result += "VI";
+          num -= 6;
+        }else if(num>=5){
+          result += "V";
+          num -= 5;
+        }else if(num>=4){
+          result += "IV";
+          num -= 4;
+        }else if(num>=3){
+          result += "III";
+          num -= 3;
+        }else if(num>=2){
+          result += "II";
+          num -= 2;
+        }else if(num>=1){
+          result += "I";
+          num -= 1;
+        }
+        
+      }
+      return result;
+    }
+}
+
+other's solution:
+public String intToRoman(int num) {
+    String data[] = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+    int value[] = {1000,900,500,400,100,90,50,40,10,9,5,4,1}, base = -1;
+    StringBuilder result = new StringBuilder();
+
+    for(int i = 0;i < data.length;i++){
+        if((base=num/value[i])!=0){
+            while(base--!=0)result.append(data[i]);
+            num=num%value[i];
+        }
+    }
+    return result.toString();
+}
+
+!!!!!!!!!!
+    int[] values = {1000,900,500,400,100,90,50,40,10,9,5,4,1};
+    String[] strs = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+
+    StringBuilder sb = new StringBuilder();
+
+    for(int i=0;i<values.length;i++) {
+        while(num >= values[i]) {
+            num -= values[i];
+            sb.append(strs[i]);
+        }
+    }
+    return sb.toString();
+}
