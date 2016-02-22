@@ -1,0 +1,87 @@
+Write a program to check whether a given number is an ugly number.
+Ugly numbers are positive numbers whose prime factors only include 2, 3, 5. 
+For example, 6, 8 are ugly while 14 is not ugly since it includes another prime factor 7.
+Note that 1 is typically treated as an ugly number.
+
+
+public class Solution {
+    public boolean isUgly(int num) {
+      if(num <= 0) {
+        return false;
+      }  
+      if(num == 1) {
+        return true;
+      }
+      
+      int[] factors = new int[num/2 + 1];
+      int i = 2;
+      int index=0;
+      while(i<=num/2 + 1) {
+        if(num%i == 0) {
+          factors[index++] = i;
+        }
+        i++;
+      }
+      
+      for(int j=0;j<num/2 + 1;j++) {
+        if(factors[j]!=0 && prime(factors[j])) {
+          if(j!=2&&j!=3&&j!=5) {
+              return false;
+          }
+        }
+      }
+      return true;
+      
+    }
+    
+    public boolean prime(int n) {
+      for (int i=2; i<=n/2 + 1; i++) {
+        if (n%i == 0 && i!=n) {
+          return false;
+        }
+      }
+      return true;
+    }
+}
+
+Not a good sulition.
+case 214797179 Run Code Status: Memory Limit Exceeded
+
+public class Solution {
+    public static boolean isUgly(int num) {
+        if (num <= 0) {
+            return false;
+        }
+
+        int[] divisors = {2, 3, 5};
+
+        for(int d : divisors) {
+            while (num % d == 0) {
+                num /= d;
+            }
+        }
+        return num == 1;
+    }
+}
+
+public boolean isUgly(int num) {
+    if(num == 0) {
+        return false;
+    }
+    while(num % 5 == 0) {
+        num /= 5;
+    }
+    while(num % 3 == 0) {
+        num /= 3;
+    }
+    while(num % 2 == 0) {
+        num /= 2;
+    }
+    if(num == 1) {
+        return true;
+    }
+    return false;
+}
+
+
+
