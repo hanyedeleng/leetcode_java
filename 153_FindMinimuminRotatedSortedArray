@@ -1,0 +1,64 @@
+Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+Find the minimum element.
+You may assume no duplicate exists in the array.
+
+
+Solution:
+
+public class Solution {
+    public int findMin(int[] nums) {
+      if(nums == null) {
+        return 0;
+      }
+      if(nums.length==1) {
+        return nums[0];
+      }
+      int left = 0;
+      int right = nums.length - 1;
+      
+      if (nums[left] < nums[right]) {
+        return nums[left];
+      }
+      
+      return loop(nums, 0, right);
+    }
+    
+    private int loop(int[] nums, int left, int right) {
+      if(right-left<=1) {
+        return Math.min(nums[left], nums[right]);
+      }
+      int middle = left + (right-left) / 2;
+      if(nums[middle] < nums[left]){
+        if(nums[middle]<nums[middle-1]) {
+          return nums[middle];
+        }
+        return loop(nums, left, middle);
+      }else {
+        if(nums[middle]>nums[middle+1]) {
+          return nums[middle+1];
+        }
+        return loop(nums, middle, right);
+      }
+    }
+}
+
+other's solution:
+public int findMin(int[] nums) {
+
+        int start = 0, end = nums.length - 1, mid;
+        while (start  <  end) {
+            mid = (start + end) / 2;
+            if (nums[mid]  > nums[end])
+                start = mid + 1;
+            else
+                end = mid;
+        }
+        return nums[start];
+}
+
+Tips:
+1. Don't mistake iteration with recursive.
+2. recursive use it self, so if you use it, usually return loop(n-1 size);
+
+
