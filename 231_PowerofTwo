@@ -1,0 +1,18 @@
+Given an integer, write a function to determine if it is a power of two.
+
+Solution:
+public class Solution {
+    public boolean isPowerOfTwo(int n) {
+      if(n<=0) {
+          return false;
+      }
+      if(Integer.toBinaryString(n).replace("0","").length() == 1) {
+        return true;
+      }
+      return false;
+    }
+}
+
+Tips:
+1. Integer.toBinaryString
+2. Don't forget signed. -2147482648
