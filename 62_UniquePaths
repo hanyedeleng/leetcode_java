@@ -1,0 +1,42 @@
+A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of 
+the grid (marked 'Finish' in the diagram below).
+
+How many possible unique paths are there?
+
+
+
+Solution:
+public class Solution {
+    public int uniquePaths(int m, int n) {
+      if(m == 1 || n == 1) {
+        return 1;
+      }
+      if(m - 1 == 0) {
+          return n;
+      }
+      if(n - 1 == 0) {
+          return m;
+      }
+      return (uniquePaths(m,n-1)+uniquePaths(m-1,n));
+    }
+}
+
+Tips: my solution works when the nums is smaller, 23 x 12 not work
+
+other's solution:
+If you mark the south move as '1' and the east move as '0'. This problem shall be equal to : Given (m+n-2) bits. you can fill in '1' 
+for (m-1) times and '0' for (n-1) times, what is the number of different numbers? the result is clear that the formula shall 
+be C(m-1)(m+n-2), where m-1 is the superscript behind C and m+n-2 is the subscript behind C. To avoid overflow, 
+I write the program in this manner.
+
+public class Solution {
+
+public int uniquePaths(int m, int n) {
+
+     long result = 1;
+     for(int i=0;i<Math.min(m-1,n-1);i++)
+         result = result*(m+n-2-i)/(i+1); 
+     return (int)result;
+
+}
