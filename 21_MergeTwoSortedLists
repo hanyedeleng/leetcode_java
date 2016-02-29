@@ -1,0 +1,85 @@
+Merge two sorted linked lists and return it as a new list. The new list should be made by splicing together the nodes
+of the first two lists.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+      if(l1 == null && l2 == null) {
+        return null;
+      }
+      if (l1 == null && l2 != null) {
+        return l2;
+      }
+      if (l2 == null && l2 != null) {
+        return l1;
+      }
+      
+      ListNode newList = new ListNode<>();
+      while(l1.next != null && l2.next != null) {
+        if(l1.val < l2.val) {
+          newList.val = l1.val;
+          l1 = l1.next;
+        }else {
+          newList.val = l2.val;
+          l2 = l2.next;
+        }
+        newList = newList.next;
+      }
+      if (l1.next == null) {
+        while (l2.next != null) {
+          newList.val = l2.val;
+          newList = newList.next;
+          l2 = l2.next;
+        }
+      }
+      if(l2.next == null) {
+        while (l1.next != null) {
+          newList.val = l1.val;
+          newList = newList.next;
+          l1 = l1.next;
+        }
+      }
+      
+      return newList;
+    }
+}
+
+
+Other's solution:
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    if (l1 == null) return l2;
+    if (l2 == null) return l1;
+    ListNode tmp;
+    if (l1.val > l2.val) {
+        tmp = l2;
+        l2 = l1;
+        l1 = tmp;
+    }
+    ListNode p = l1;
+    while (l2 != null) {
+        while (p.next != null && p.next.val <= l2.val) p = p.next;
+        tmp = p.next;
+        p.next = l2;
+        l2 = tmp;
+    }
+    return l1;
+}
+
+public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    if (l1 == null) return l2;
+    if (l2 == null) return l1;
+    ListNode head = l1.val < l2.val ? l1 : l2;
+    ListNode nonHead = l1.val < l2.val ? l2 : l1;
+
+    head.next = mergeTwoLists(head.next, nonHead);
+
+    return head;
+}
+
