@@ -1,0 +1,88 @@
+Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+For example, this binary tree is symmetric:
+    1
+   / \
+  2   2
+ / \ / \
+3  4 4  3
+But the following is not:
+    1
+   / \
+  2   2
+   \   \
+   3    3
+Note:
+Bonus points if you could solve it both recursively and iteratively.
+confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public boolean isSymmetric(TreeNode root) {
+      if (root == null) {
+        return true;
+      }
+      TreeNode left = root.left;
+      TreeNode right = root.right;
+      while (left != null && right != null && left.val == right.val) {
+        left.right 
+      }
+      return false;
+    }
+}
+
+other's solution:
+public boolean isSymmetric(TreeNode root) {
+    if(root == null){
+        return true;
+    }
+
+    return compare(root.left, root.right);
+}
+
+private boolean compare(TreeNode ln, TreeNode rn){
+    if (ln == null || rn == null) {
+        return !(ln == null ^ rn == null);
+    }
+
+    boolean leftResult = compare(ln.left, rn.right);
+    boolean rightResult = compare(ln.right, rn.left);
+
+    if (!(leftResult && rightResult)) {
+        return false;
+    }
+
+    return ln.val == rn.val;
+}
+
+Basically, it is BFS with a queue. I was inspired by another question of serialize/deserialized tree. So I just serialize each level of the tree and check if it is palindrome. if the node is null, just put "X" in the array.
+
+public boolean isSymmetric(TreeNode root) {
+    Queue<TreeNode> q = new LinkedList<>();
+    q.offer(root);
+    while(!q.isEmpty()) {
+        int size = q.size();
+        String[] arr = new String[size];
+        for(int i=0;i<size;i++) {
+            TreeNode node = q.poll();
+            if(node!=null) {
+                arr[i] = node.val+"";
+                q.offer(node.left);
+                q.offer(node.right);
+            } else
+                arr[i] = "X";
+        }
+        int l=0,r=size-1;
+        while(l<r)
+            if(!arr[l++].equals(arr[r--]))
+                return false;
+    }
+    return true;
+}
