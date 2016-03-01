@@ -1,0 +1,107 @@
+Implement the following operations of a queue using stacks.
+
+push(x) -- Push element x to the back of queue.
+pop() -- Removes the element from in front of queue.
+peek() -- Get the front element.
+empty() -- Return whether the queue is empty.
+Notes:
+You must use only standard operations of a stack -- which means only push to top, peek/pop from top, size, and 
+is empty operations are valid.
+Depending on your language, stack may not be supported natively. You may simulate a stack by using a list or 
+deque (double-ended queue), as long as you use only standard operations of a stack.
+You may assume that all operations are valid (for example, no pop or peek operations will be called on an empty queue).
+
+
+Solution:
+class MyQueue {
+    // Push element x to the back of queue.
+    private Stack<Integer> stIn = new Stack();
+    private Stack<Integer> stOu = new Stack();
+    public void push(int x) {
+      stIn.push(x); 
+    }
+
+    // Removes the element from in front of queue.
+    public void pop() {
+       while (!stIn.empty()) {
+         stOu.push(stIn.pop());
+       }
+       stOu.pop();
+       while(!stOu.empty()) {
+        stIn.push(stOu.pop());
+       }
+    }
+
+    // Get the front element.
+    public int peek() {
+      while (!stIn.empty()) {
+        stOu.push(stIn.pop());
+      }
+       int result = stOu.peek();
+       while(!stOu.empty()) {
+        stIn.push(stOu.pop());
+       }
+       return result;
+    }
+
+    // Return whether the queue is empty.
+    public boolean empty() {
+       while (!stIn.empty()) {
+         stOu.push(stIn.pop());
+       }
+       boolean result = stOu.empty();
+       while(!stOu.empty()) {
+        stIn.push(stOu.pop());
+       }
+       return result;
+    }
+}
+
+
+Other's solution:
+class MyQueue {
+
+
+Stack<Integer> stack1 = new Stack<Integer>();
+Stack<Integer> stack2 = new Stack<Integer>();
+int peek;
+
+// Push element x to the back of queue.
+public void push(int x) {
+    if (stack1.empty())
+        peek = x;
+
+    stack1.push(x);
+}
+
+// Removes the element from in front of queue.
+public void pop() {
+    while (! stack1.empty())
+        stack2.push(stack1.pop());
+
+    stack2.pop();
+
+    if (! stack2.empty())
+        peek = stack2.peek();
+
+    while (! stack2.empty())
+        stack1.push(stack2.pop());
+}
+
+// Get the front element.
+public int peek() {
+    return peek;
+
+}
+
+// Return whether the queue is empty.
+public boolean empty() {
+    return (stack1.empty());
+
+}
+}
+
+Just use two stack in, out, get the thing you need, than put it back.
+Tips:
+1. Stack<Integer> just like ArrayList<>;
+2. push, pop, peek, empty.
