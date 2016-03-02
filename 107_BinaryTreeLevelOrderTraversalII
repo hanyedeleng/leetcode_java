@@ -1,0 +1,71 @@
+Given a binary tree, return the bottom-up level order traversal of its nodes' values. (ie, from left to right, level by level
+from leaf to root).
+
+For example:
+Given binary tree {3,9,20,#,#,15,7},
+    3
+   / \
+  9  20
+    /  \
+   15   7
+return its bottom-up level order traversal as:
+[
+  [15,7],
+  [9,20],
+  [3]
+]
+
+solution:
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    List<List<Integer>> lists = new ArrayList<ArrayList<Integer>>();
+      if(root == null) {
+        return lists;
+      }
+      return bst(lists,root);
+    }
+    public List<list<Integer>> bst(List<List<Integer>> lists, TreeNode root) {
+      if(root == null) {
+        return lists;
+      }
+      if (root->left == null && root->right == null) {
+        List<Integer> list = new ArrayList<>();
+        list.add(root.val);
+        lists.add(list);
+        return lists;
+      }
+      lists.addAll(bst(lists, root->left));
+      lists.addAll(bst(lists, root->right));
+      return lists;
+    }
+}
+
+other's solution:
+ public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    List<List<Integer>> list=new ArrayList();
+    get(list,root,0);
+    Collections.reverse(list);
+    return list;
+}
+public void get(List<List<Integer>> list,TreeNode root,int lvl){
+    if(root==null) return;
+    List<Integer> lvlList;
+    if(lvl==list.size()){
+        lvlList=new ArrayList<Integer>();
+        list.add(lvlList);
+    }
+    lvlList=list.get(lvl);
+    lvlList.add(root.val);
+    get(list,root.left,lvl+1);
+    get(list,root.right,lvl+1);
+}
+
