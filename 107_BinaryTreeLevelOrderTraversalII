@@ -50,6 +50,31 @@ public class Solution {
 }
 
 other's solution:
+public class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> container = new ArrayList<List<Integer>>();
+        if (root == null) return container;
+        TreeNode cur = null;
+        Queue<TreeNode> sameLevel = new LinkedList<TreeNode>();
+        sameLevel.add(root);
+        while (!sameLevel.isEmpty()) {
+            List<Integer> oneLevel = new ArrayList<Integer>();
+            Queue<TreeNode> temp = new LinkedList<TreeNode>();
+            while(!sameLevel.isEmpty()) {
+                cur = sameLevel.remove();
+                oneLevel.add(cur.val);
+                if (cur.left != null)  temp.add(cur.left); 
+                if (cur.right != null) temp.add(cur.right);
+            }
+            container.add(0,oneLevel);
+            sameLevel = temp;
+        }
+        return container;
+    }
+}
+
+
+------
  public List<List<Integer>> levelOrderBottom(TreeNode root) {
     List<List<Integer>> list=new ArrayList();
     get(list,root,0);
