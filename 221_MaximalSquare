@@ -1,0 +1,87 @@
+Given a 2D binary matrix filled with 0's and 1's, find the largest square containing all 1's and return its area.
+
+For example, given the following matrix:
+
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+Return 4.
+
+
+public class Solution {
+    public int maximalSquare(char[][] matrix) {
+
+    }
+}
+
+other's solution:
+DP
+
+Basic idea is to iterate over all columns and rows of a matrix (starting with i=j=1). 
+If value in a cell>0 and cells to the north, west, and north-west are >0, pick smallest value of those 3 cells, take it's square root, 
+add 1, and assign square of new value to current cell. For example given matrix
+
+1   1   1   1   1   1
+1   1   1   0   1   1
+1   1   1   1   1   1
+1   1   1   1   1   1
+1   1   1   1   1   1
+1   1   1   1   0   1
+
+We get:
+
+1   1   1   1   1   1
+1   4   4   0   1   4
+1   4   9   1   1   4
+1   4   9   4   4   4
+1   4   9   9   9   9
+1   4   9  16   0   1
+
+public class Solution {
+    static int[] squares = new int[1001];
+    static{
+        for (int i=0;i<=1000;i++){
+            squares[i] = i*i;
+        }
+    } 
+
+    public int maximalSquare(char[][] matrix) {
+        if (matrix == null || matrix.length == 0){
+            return 0;
+        }
+        int result = 0;
+
+        int[][] intMatrix = new int[matrix.length][matrix[0].length];
+        for (int i=0;i<matrix.length;i++){
+            for (int j=0;j<matrix[0].length;j++){
+                int val = matrix[i][j]-'0';
+                if (val == 1){
+                    result = 1;
+                }
+                intMatrix[i][j] = val;
+            }
+        }
+
+        for (int i = 1; i<intMatrix.length;i++){
+            for (int j=1; j<intMatrix[0].length;j++){
+                if (intMatrix[i][j]!=0){
+                    int val1 = intMatrix[i][j-1];
+                    int val2 = intMatrix[i-1][j];
+                    int val3 = intMatrix[i-1][j-1];
+                    int min1 = Math.min(val1, val2);
+                    int min = Math.min(min1, val3);
+                    if (min!=0){
+                        int index = (int)Math.sqrt(min);
+                        intMatrix[i][j] = (int)squares[index+1];
+                        if (intMatrix[i][j]>result){
+                            result = intMatrix[i][j];
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+}
+
