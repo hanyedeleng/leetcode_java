@@ -49,3 +49,8 @@ public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
 
 }
 
+Analysis:
+if now same node, then a.next = b.next ==null
+
+a a a a b b b b b null
+b b b b b a a a a null
