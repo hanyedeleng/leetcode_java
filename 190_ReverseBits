@@ -16,6 +16,8 @@ public class Solution {
     }
 }
 
+(this solution is not working because most of the time the length of the string will less than 32 bit)
+
 other's solution:
 https://leetcode.com/discuss/27328/java-solution-and-optimization
 public int reverseBits(int n) {
