@@ -1,0 +1,61 @@
+
+Given a singly linked list, determine if it is a palindrome.
+
+
+public class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if(head == null || head.next == null) {
+            return true;
+        }
+        
+        ListNode newhead;
+        ListNode tmp2 = head;
+        
+        ListNode oldhead = head; // use for later compare
+        head = head.next;
+        while (head != null) {
+            ListNode tmp = tmp2;
+            tmp2.val = head.val;
+            tmp2.next = tmp;
+            head = head.next;
+        }
+        
+        while(oldhead != null) {
+            if(oldhead.val != tmp2.val) {
+                return false;
+            }
+            oldhead = oldhead.next;
+            tmp2 = tmp2.next;
+        }
+        return true;
+    }
+}
+
+my own solution time exeeded 
+
+other's solution:
+public class Solution 
+{
+    public boolean isPalindrome(ListNode head) 
+    {
+        Stack<Integer> s = new Stack<Integer>();
+        ListNode temp = head;
+        ListNode cur = head;
+        while(temp != null)
+        {
+            s.push(temp.val);
+            temp = temp.next;
+        }
+        while(cur != null)
+        {
+            if(cur.val != s.peek())
+                return false;
+            else
+            {
+                cur = cur.next;
+                s.pop();
+            }
+        }
+        return true;
+    }
+}
