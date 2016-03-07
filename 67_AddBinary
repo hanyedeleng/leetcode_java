@@ -1,0 +1,248 @@
+Given two binary strings, return their sum (also a binary string).
+
+For example,
+a = "11"
+b = "1"
+Return "100".
+
+
+solution:
+public class Solution {
+    public String addBinary(String a, String b) {
+      int len_a = a.length();
+      int len_b = a.length();
+      
+      if (len_a == 0 && len_b == 0) {
+        return "";
+      }
+      if (len_a == 0) {
+        return b;
+      }
+      if (len_b == 0) {
+        return a;
+      }
+      
+      int va = Integer.parseInt(a,2);
+      int vb = Integer.parseInt(b,2);
+      int c = va + vb;
+      return Integer.toBinaryString(c);
+      
+      int len_a = a.length();
+      int len_b = b.length();
+      
+      int index_a = len_a - 1;
+      int index_b = len_b - 1;
+      int tmp = 0;
+      String result = "";
+      
+      while(index_a >= 0 && index_b >= 0){
+        int i = Integer.parseInt(a.charAt(index_a));
+        int j = Integer.parseInt(b.charAt(index_b));
+        
+        if(i + j + tmp == 0) {
+          result = "0" + result;  
+        }else if(i + j + tmp == 1) {
+          result = "1" + result; 
+        }else if(i + j + tmp == 2) {
+          result = "0" + result;
+          tmp = 1;
+        }
+        index_a--;
+        index_b--;
+      }
+      
+      if(index_a == -1) {
+      while(index_b >= 0) {
+        int j = Integer.parseInt(b.charAt(index_b));
+        if(j + tmp == 0) {
+          result = "0" + result;
+        }
+        if(j + tmp == 1) {
+          result = "1" + result;
+        }
+        if(j + tmp == 2) {
+          result = "0" + result;
+          tmp = 1;
+        }
+        index_b--;
+      }
+      }else if(index_b == -1) {
+        while(index_a >= 0) {
+          int i = Integer.parseInt(a.charAt(index_a));
+          if(i + tmp == 0) {
+            result = "0" + result;
+          }
+          if(i + tmp == 1) {
+            result = "1" + result;
+          }
+          if(i + tmp == 2) {
+            result = "0" + result;
+            tmp = 1;
+          }
+          index_a--;
+        }
+      }
+      return result;
+    }
+}
+
+new solution:
+public class Solution {
+    public String addBinary(String a, String b) {
+      int len_a = a.length();
+      int len_b = b.length();
+      
+      if (len_a == 0 && len_b == 0) {
+        return "";
+      }
+      if (len_a == 0) {
+        return b;
+      }
+      if (len_b == 0) {
+        return a;
+      }
+      
+    //   int va = Integer.parseInt(a,2);
+    //   int vb = Integer.parseInt(b,2);
+    //   int c = va + vb;
+    //   return Integer.toBinaryString(c);
+      
+    //   int len_a = a.length();
+    //   int len_b = b.length();
+      
+      int index_a = len_a - 1;
+      int index_b = len_b - 1;
+      int tmp = 0;
+      String result = "";
+      
+      while(index_a >= 0 && index_b >= 0){
+        int i = Integer.parseInt("" + a.charAt(index_a));
+        // System.out.println(index_a);
+        // System.out.println(index_b);
+        int j = Integer.parseInt("" + b.charAt(index_b));
+        
+        if(i + j + tmp == 0) {
+          result = "0" + result;
+          tmp = 0;
+        }else if(i + j + tmp == 1) {
+          result = "1" + result;
+          tmp = 0;
+        }else if(i + j + tmp == 2) {
+          result = "0" + result;
+          tmp = 1;
+        }else if(i + j + tmp == 3) {
+          result = "1" + result;
+          tmp = 1;
+        }
+        index_a--;
+        index_b--;
+      }
+      
+      if(index_a == -1 && index_b != -1) {
+      while(index_b >= 0) {
+        int j = Integer.parseInt(""+b.charAt(index_b));
+        if(j + tmp == 0) {
+          result = "0" + result;
+          tmp = 0;
+        }
+        if(j + tmp == 1) {
+          result = "1" + result;
+          tmp = 0;
+        }
+        if(j + tmp == 2) {
+          result = "0" + result;
+          tmp = 1;
+        }
+        if(j + tmp == 3) {
+          result = "1" + result;
+          tmp = 1;
+        }
+        index_b--;
+      }
+      }else if(index_b == -1 && index_a != -1) {
+        while(index_a >= 0) {
+          int i = Integer.parseInt(""+a.charAt(index_a));
+          if(i + tmp == 0) {
+            result = "0" + result;
+            tmp = 0;
+          }
+          if(i + tmp == 1) {
+            result = "1" + result;
+            tmp = 0;
+          }
+          if(i + tmp == 2) {
+            result = "0" + result;
+            tmp = 1;
+          }
+          if(i + tmp == 3) {
+            result = "1" + result;
+            tmp = 1;
+          }
+          index_a--;
+        }
+      }
+      if(tmp == 1) {
+        result = "1" + result;
+      }
+      return result;
+    }
+}
+
+other's solution:
+class Solution {
+    public String addBinary(String a, String b) {
+        int c = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i = a.length() - 1, j = b.length() - 1; i >= 0 || j >= 0;){
+            if(i >= 0) c += a.charAt(i--) - '0';
+            if(j >= 0) c += b.charAt(j--) - '0';
+            sb.insert(0, (char)((c % 2) + '0'));
+            c /= 2;
+        }
+        if(c == 1) sb.insert(0, "1");
+        return sb.toString();
+    }
+}
+
+
+public class Solution {
+    public String addBinary(String a, String b) {
+        if(a == null || a.isEmpty()) {
+            return b;
+        }
+        if(b == null || b.isEmpty()) {
+            return a;
+        }
+        char[] aArray = a.toCharArray();
+        char[] bArray = b.toCharArray();
+        StringBuilder stb = new StringBuilder();
+
+        int i = aArray.length - 1;
+        int j = bArray.length - 1;
+        int aByte;
+        int bByte;
+        int carry = 0;
+        int result;
+
+        while(i > -1 || j > -1 || carry == 1) {
+            aByte = (i > -1) ? Character.getNumericValue(aArray[i--]) : 0;
+            bByte = (j > -1) ? Character.getNumericValue(bArray[j--]) : 0;
+            result = aByte ^ bByte ^ carry;
+            carry = ((aByte + bByte + carry) >= 2) ? 1 : 0;
+            stb.append(result);
+        }
+        return stb.reverse().toString();
+    }
+}
+
+
+
+
+
+error:
+"10100000100100110110010000010101111011011001101110111111111101000000101111001110001111100001101"
+"110101001011101110001111100110001010100001101011101010000011011011001011101111001100000011011110011"
+
+input to more than 32 bits.
+
+
