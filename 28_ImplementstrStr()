@@ -1,0 +1,76 @@
+Implement strStr().
+
+Returns the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.
+
+
+solution:
+public class Solution {
+    public int strStr(String haystack, String needle) {
+      int len = haystack.length();
+      if(needle.length() == 0) {
+        return 0;
+      }
+      
+      if(len == 0 || needle.length() > len) {
+        return -1;
+      }
+      
+      int result = -1;
+      
+      for (int i = 0; i < len; i++) {
+        if (haystack.charAt(i) == needle.charAt(0)) {
+          int j = 1;
+          while (j < needle.length()) {
+            if(i+j > len-1) {
+              break;
+            }
+            if(i+j <= len-1 && haystack.charAt(i+j) != needle.charAt(j)) {
+              break;
+            }
+            
+            j++;
+          }
+          if(j == needle.length()) {
+            result = i;
+            break;
+          }
+        }
+      }
+      return result;
+    }
+}
+
+Time limit exceeded:
+should use KMP algorithm;
+Hi guys!
+
+Here is a pretty concise implementation of a Knuth-Morris-Pratt algorithm in Java. Instead of commenting and explaining the approach I want to give a really-really useful link to TopCoder tutorial on the topic. The code is just a slightly modified version of the code from the tutorial and an explanation there is perfect.
+
+public class Solution {
+
+    private int[] failureFunction(char[] str) {
+        int[] f = new int[str.length+1];
+        for (int i = 2; i < f.length; i++) {
+            int j = f[i-1];
+            while (j > 0 && str[j] != str[i-1]) j = f[j];
+            if (j > 0 || str[j] == str[i-1]) f[i] = j+1;
+        }
+        return f;
+    }
+
+    public int strStr(String haystack, String needle) {
+        if (needle.length() == 0) return 0;
+        if (needle.length() <= haystack.length()) {
+            int[] f = failureFunction(needle.toCharArray());
+            int i = 0, j = 0;
+            while (i < haystack.length()) {
+                if (haystack.charAt(i) == needle.charAt(j)) {
+                    i++; j++;
+                    if (j == needle.length()) return i-j;
+                } else if (j > 0) j = f[j];
+                else i++;
+            }
+        }
+        return -1;
+    }
+}
