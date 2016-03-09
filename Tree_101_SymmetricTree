@@ -62,7 +62,8 @@ private boolean compare(TreeNode ln, TreeNode rn){
     return ln.val == rn.val;
 }
 
-Basically, it is BFS with a queue. I was inspired by another question of serialize/deserialized tree. So I just serialize each level of the tree and check if it is palindrome. if the node is null, just put "X" in the array.
+Basically, it is BFS with a queue. I was inspired by another question of serialize/deserialized tree. 
+So I just serialize each level of the tree and check if it is palindrome. if the node is null, just put "X" in the array.
 
 public boolean isSymmetric(TreeNode root) {
     Queue<TreeNode> q = new LinkedList<>();
