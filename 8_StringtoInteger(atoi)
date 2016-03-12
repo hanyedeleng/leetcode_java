@@ -1,0 +1,57 @@
+Implement atoi to convert a string to an integer.
+Hint: Carefully consider all possible input cases. If you want a challenge, please do not see below and ask yourself what are
+the possible input cases.
+
+Notes: It is intended for this problem to be specified vaguely (ie, no given input specs). You are responsible to gather all 
+the input requirements up front.
+
+
+Solution:
+public class Solution {
+    public int myAtoi(String str) {
+      if (str.length() == 0) {
+        return 0;
+      }
+      
+      int sum = 0;
+      int i = 0;
+      while (i < str.length()) {
+        if (!(str.charAt(i) - '0' <= 9 && str.charAt(i) - '0' >= 0)) {
+          return 0;
+        }
+        sum = sum * 10 + (str.charAt(i) - '0');
+        i++;
+      }
+      
+      return sum;
+    }
+}
+
+
+other's solution:
+public class Solution {
+    public int myAtoi(String str) {
+        if (str.isEmpty())
+            return 0;
+        str = str.trim();
+        int i = 0, ans = 0, sign = 1, len = str.length();
+        if (str.charAt(i) == '-' || str.charAt(i) == '+')
+            sign = str.charAt(i++) == '+' ? 1 : -1;
+        for (; i < len; ++i) {
+            int tmp = str.charAt(i) - '0';
+            if (tmp < 0 || tmp > 9)
+                break;
+            if (ans > Integer.MAX_VALUE / 10
+                    || (ans == Integer.MAX_VALUE / 10 && Integer.MAX_VALUE % 10 < tmp))
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            else
+                ans = ans * 10 + tmp;
+        }
+        return sign * ans;
+    }
+    
+Tips:
+1. space
+2. + -
+3. overflow
+
