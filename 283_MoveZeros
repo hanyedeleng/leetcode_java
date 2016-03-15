@@ -23,3 +23,18 @@ public class Solution {
 }
 
 Tips: exchange the element with the nearest non-zero element.
+
+Other's solution:
+public void moveZeroes(int[] nums) {
+    int count = 0;
+    for (int i = 0; i < nums.length; i++) {
+        if (nums[i] == 0) {
+            count++;
+        } else {
+            nums[i - count] = nums[i];
+            if (count != 0) {nums[i] = 0;}
+        }
+    }
+    return;
+}
+this one is O(1);
