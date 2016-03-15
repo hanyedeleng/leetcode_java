@@ -65,3 +65,6 @@ Tips:
   1. root == null;
   2. root.left == null; root.right == null
 ****
+
+For now, tree problems need to consider == null, then, left, right, recursive.
+and remember the return statement.
