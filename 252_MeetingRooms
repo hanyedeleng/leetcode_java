@@ -46,4 +46,4 @@ public class Solution {
 }
 
 Tips:
-  1. Array.sort();
+  1. Arrays.sort();
