@@ -12,6 +12,35 @@ The relative order inside both the even and odd groups should remain as it was i
 The first node is considered odd, the second node even and so on ...
 
 
+myown version:
+public class Solution {
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return head;
+        }
+        
+        ListNode odd = head;
+        ListNode oddhead = head;
+        ListNode even = head.next;
+        ListNode evenhead = head.next;
+        head = head.next.next;
+        while (head != null) {
+            if (head != null) {
+                oddhead.next = head;
+                oddhead = oddhead.next;
+                head = head.next;
+            }
+            if (head != null) {
+                evenhead.next = head;
+                evenhead = evenhead.next;
+                head = head.next;
+            }
+        }
+        oddhead.next = even;
+        return odd;
+    }
+}
+this version only works on even number, i.e. 8 , but when odd 7 will not work;
 
 /**
  * Definition for singly-linked list.
