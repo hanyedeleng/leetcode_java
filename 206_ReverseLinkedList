@@ -22,3 +22,21 @@ public class Solution {
       return p2;
     }
 }
+
+
+myown iterative version:
+         if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode ans = head;
+        head = head.next;
+        ans.next = null;
+        
+        while (head != null) {
+            ListNode node = head;
+            head = head.next;
+            node.next = ans;
+            ans = node;
+        }
+        return ans;
