@@ -17,6 +17,28 @@ public class Solution {
       return result;
     }
 }
+public class Solution {
+    public int maxProfit(int[] prices) {
+        if (prices.length <= 1) {
+            return 0;
+        }
+        
+        int max = 0;
+        int sell = prices[0];
+        int buy = prices[0];
+        for (int i = 1; i< prices.length; i++) {
+            if (prices[i] > prices[i-1]) {
+                buy = Math.min(prices[i-1],buy);
+                sell = prices[i];
+                max = Math.max(max, sell-buy);
+            }else {
+                buy = Math.min(prices[i],buy);
+            }
+        }
+        return max;
+    }
+}
+
 
 This solution seems working on small set, but if the array is too large, time limit exceeded.
 My seconds solution: if the next price is higher than current, use the current to replace the next. Remember to compute the result.
