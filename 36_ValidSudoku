@@ -22,6 +22,39 @@ Tips:
 3. HashSet . add()
 e. pay attention to parameter tyep;
 
+public class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        for (int i = 0; i < 9; i++) {
+            Set<Character> s = new HashSet<>();
+            Set<Character> t = new HashSet<>();
+            for (int j = 0; j < 9; j++) {
+                if ((board[i][j] != '.' && !s.add(board[i][j])) || (board[j][i] != '.' && !t.add(board[j][i]))) {
+                    return false;
+                }else {
+                    if (i%3 == 0 && j%3 == 0 && !isValidGrid(board,i,j)) {
+                        return false;
+                    }
+                }    
+            }
+        }
+        return true;
+    }
+    
+    public boolean isValidGrid(char[][] board, int row, int col) {
+        Set<Character> s = new HashSet<>();
+        for (int i = row; i < row + 3; i++) {
+            for (int j = col; j < col + 3; j++) {
+                if (i < 9 && j < 9) {
+                    if (board[i][j] != '.' && !s.add(board[i][j])) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+}
+
 
 other's solution:
 public class Solution {
