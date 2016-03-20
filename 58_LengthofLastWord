@@ -32,3 +32,32 @@ don't forget to check the index!!!!!!!
 
 "" '' char, String
 string don't use null, use length() == 0
+
+public class Solution {
+    public int lengthOfLastWord(String s) {
+        if (s.length() == 0) {
+            return 0;
+        }
+        
+        int result = 0;
+        int i = s.length() - 1;
+        
+        while (i >= 0 && s.charAt(i) == ' ') {
+            i--;
+        }
+        if (i == -1) {
+            return 0;
+        }else {
+            while (i >= 0 && s.charAt(i) != ' ') {
+                i--;
+                result++;
+            }
+        }
+        return result;
+    }
+}
+
+other's solution:
+public int lengthOfLastWord(String s) {
+    return s.trim().length()-s.trim().lastIndexOf(" ")-1;
+}
