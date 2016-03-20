@@ -67,3 +67,9 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
     slow.next = slow.next.next;
     return head;
 }
+
+The idea of one pass and O(1) space usually comes with two iterators. One is used to construct the new array/list, 
+and the other is used to iterate the original array/list.
+
+Specific to this problem, we can define two iterators, one is n step ahead of the other. When the ahead one reach the 
+end (its next =NULL), delete the other's next.
