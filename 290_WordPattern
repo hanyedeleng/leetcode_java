@@ -44,3 +44,53 @@ public class Solution {
 Tips:
 1. string equals
 2. string length();
+
+public class Solution {
+    public boolean wordPattern(String pattern, String str) {
+        String[] s = str.split("\\s");
+        if (pattern.length() != s.length) {
+            return false;
+        }
+        // char from pattern, string from string array
+        Map<Character, String> map = new HashMap<>();
+        for (int i = 0; i < pattern.length(); i++) {
+            if (map.get(pattern.charAt(i)) == null) {
+                if (map.values().contains(s[i])) {
+                    return false;
+                }
+                map.put(pattern.charAt(i),s[i]);
+            }else {
+                if (!map.get(pattern.charAt(i)).equals(s[i])) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+other's solution:
+public boolean wordPattern(String pattern, String str) {
+    String[] words = str.split(" ");
+    if (words.length != pattern.length())
+        return false;
+    Map index = new HashMap();
+    for (Integer i=0; i<words.length; ++i)
+        if (index.put(pattern.charAt(i), i) != index.put(words[i], i))
+            return false;
+    return true;
+}
+I go through the pattern letters and words in parallel and compare the indexes where they last appeared.
+Edit 1: Originally I compared the first indexes where they appeared, using putIfAbsent instead of put. 
+That was based on mathsam's solution for the old Isomorphic Strings problem. But then czonzhu's answer below 
+made me realize that put works as well and why.
+
+Edit 2: Switched from
+
+    for (int i=0; i<words.length; ++i)
+        if (!Objects.equals(index.put(pattern.charAt(i), i),
+                            index.put(words[i], i)))
+            return false;
+to the current version with i being an Integer object, which allows to compare with just != because there's 
+no autoboxing-same-value-to-different-objects-problem anymore. Thanks to lap_218 for somewhat pointing that out in the comments.'
+//
