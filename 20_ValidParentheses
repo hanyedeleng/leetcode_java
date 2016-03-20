@@ -39,3 +39,20 @@ public class Solution {
 Tips:
 1. don't forget stack.empty()
 2. don't forget to push the new char, and the new pop char
+
+
+other's solution:
+public class Solution {
+  public boolean isValid(String s) {
+    while (s.contains("()") || s.contains("[]") || s.contains("{}")) {
+      s = s.replace("()", "");
+      s = s.replace("[]", "");
+      s = s.replace("{}", "");
+    }   
+    if (s.length() == 0) 
+      return true;
+    else 
+      return false;
+  }
+}
+
