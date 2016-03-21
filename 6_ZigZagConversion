@@ -10,6 +10,43 @@ Write the code that will take a string and make this conversion given a number o
 string convert(string text, int nRows);
 convert("PAYPALISHIRING", 3) should return "PAHNAPLSIIGYIR".
 
+public class Solution {
+    public String convert(String s, int numRows) {
+        if (s.length() == 0) {
+            return s;
+        }
+        
+        StringBuilder[] sbs = new StringBuilder[numRows];
+        for (int i = 0; i < sbs.length; i++) {
+            sbs[i] = new StringBuilder("");
+        }
+        int i = 0;
+        while (i < s.length()) {
+            for (int j = 0; j < numRows; j++) {
+                if (i < s.length()) {
+                    sbs[j].append(s.charAt(i++));
+                }else {
+                    i++;
+                    break;
+                }
+            }
+            for (int j = numRows - 2; j > 0; j--) {
+                if (i < s.length()) {
+                    sbs[j].append(s.charAt(i++));
+                }else {
+                    i++;
+                    break;
+                }
+            }
+        }
+        String ans = "";
+        for (i = 0; i < numRows; i++) {
+            ans += sbs[i].toString();    
+        }
+        return ans;
+    }
+}
+Tips: remember to initialize all string builder;
 other's solution:
 
 Create nRows StringBuffers, and keep collecting characters from original string to corresponding StringBuffer. Just take care of your index to keep them in bound.
