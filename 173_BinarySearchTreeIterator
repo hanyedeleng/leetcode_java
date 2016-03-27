@@ -4,6 +4,41 @@ Calling next() will return the next smallest number in the BST.
 
 Note: next() and hasNext() should run in average O(1) time and uses O(h) memory, where h is the height of the tree.
 
+my own solution:
+public class BSTIterator {
+    Stack<TreeNode> s = new Stack<>();
+    private int small = 0;
+    public BSTIterator(TreeNode root) {
+        while (root != null) {
+            s.push(root);
+            root = root.left;
+        }   
+    }
+
+    /** @return whether we have a next smallest number */
+    public boolean hasNext() {
+        if (s.isEmpty()) {
+            return false;
+        }
+        TreeNode tmp = s.peek();
+        s.pop();
+        small = tmp.val;
+        if (tmp.right != null) {
+            tmp = tmp.right;
+            s.push(tmp);
+            while (tmp.left != null) {
+                s.push(tmp.left);
+                tmp = tmp.left;
+            }
+        }
+        return true;
+    }
+
+    /** @return the next smallest number */
+    public int next() {
+        return small;    
+    }
+}
 
 
 Other's solution:
@@ -39,3 +74,4 @@ public BSTIterator(TreeNode root) {
         }
         return res;
     }
+}
