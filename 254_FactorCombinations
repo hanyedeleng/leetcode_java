@@ -41,3 +41,65 @@ output:
   [2, 4, 4],
   [4, 8]
 ]
+
+
+other's solution:
+
+public class Solution {
+    public List<List<Integer>> getFactors(int n) {
+        List<List<Integer>> ret = new ArrayList<List<Integer>> ();
+        helper(ret, new ArrayList<Integer> (), n, 2);
+        return ret;
+    }
+    
+    private void helper(List<List<Integer>> ret, List<Integer> item, int n, int start) {
+        if (n == 1) {
+            if (item.size() > 1) {
+                ret.add(new ArrayList<Integer> (item));
+            }
+            return;
+        }
+        for (int i = start; i <= n; i++) {
+            if (n % i == 0) {
+                item.add(i);
+                helper(ret, item, n/i, i);
+                item.remove(item.size()-1);
+            }
+        }
+    }
+}
+
+Suppose our target is 180, we can first chop out factor 2. then our target becomes 90.
+Then we can continue the process, until our target reachs 1. (which means we fully factorize it). Since this problem asks us 
+to compute all such combinations, we should also try to chop out factor "((2) * 3 )" "(((2) * 3 ) * 5 )". This process could
+be elegantly achieved through: 
+<At present, we are in "helper(ret, item, n, i)">
+for (int i = start; i <= n; i++) {
+    if (n % i == 0) {
+        ...
+        helper(ret, item, n/i, i);
+        ...
+    }
+}
+So elegantly, right?
+a. for (int i = start; i <= n; i++), searches through all possible numbers through start to n.
+Note: you may ask since "1" is not allowed in the combination, why we allow i <= n. Even n*1 is allowed, but in the recursive process, 
+it no longer the n as the initial one. 2(current n) of 4(inital n), apparently we should allow i to be n, otherwise, 
+we would never reach the base case.
+-------------------------------------------------------
+if (n == 1) {
+    if (item.size() > 1) {
+        ret.add(new ArrayList<Integer> (item));
+    }
+    return;
+}
+-------------------------------------------------------
+Note the case of "n * 1" would never include in to the ret set, since we require "item.size()" must larger than 1. 
+So elegant and smart? Right!!!! 
+Also take advantage of item's size!!!! Great Programming skill!
+
+
+b. (n % i == 0), guarantees the current i is a factor. 
+
+c. helper(ret, item, n/i, i), makes us to continue the search with updated target "n/i".
+Note: since the same factor could appears repeatedlly, we should start from "i" rather than "i+1".
