@@ -26,6 +26,27 @@ public class Solution {
     }
 }
 
+my second time solution:
+public class Solution {
+    public int maxArea(int[] height) {
+        if (height.length <= 1) {
+            return 0;
+        }
+        int max = 0;
+        int lo = 0;
+        int hi = height.length - 1;
+        while (lo < hi) {
+            max = Math.max(max, (hi-lo)* Math.min(height[lo],height[hi]));
+            if (height[lo] < height[hi]) {
+                lo++;
+            }else {
+                hi--;
+            }
+        }
+        return max;
+    }
+}
+
 https://github.com/coder-pft/Algorithms-in-Java/commit/479a42fdbbf4303d89beef8df9e270a29580110d
 
 Create ContainerWithMostWater.java
