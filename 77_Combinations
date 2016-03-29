@@ -1,0 +1,87 @@
+77. Combinations
+Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+
+For example,
+If n = 4 and k = 2, a solution is:
+
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+backtrack
+
+public class Solution {
+    List<List<Integer>> list;
+    
+    public List<List<Integer>> combine(int n, int k) {
+        list = new ArrayList<>();
+        ArrayList<Integer> comb = new ArrayList<Integer>();
+        backTrack(comb,1,n,k);
+        return list;
+    }
+    
+    public void backTrack (ArrayList<Integer> comb, int start, int n, int k){
+        if(k==0){
+            list.add(new ArrayList(comb));
+            return;
+        }
+        
+        ArrayList<Integer> newComb = new ArrayList<Integer>(comb);
+        for(int i=start;i<=n;i++){
+            newComb.add(i);
+            backTrack(newComb,i+1,n,k-1);
+            newComb.remove(newComb.size()-1);
+        }
+    }
+}
+
+public class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
+        if (k > n) {
+            return lists;
+        }
+        
+        helper(lists, new ArrayList<Integer>(), 1, n, k);
+        return lists;
+    }
+    
+    public void helper(ArrayList<List<Integer>> lists, ArrayList<Integer> list, int start, int n, int k) {
+        if (k == 0) {
+            lists.add(new ArrayList(list));
+            return;
+        }
+        ArrayList<Integer> tmp = new ArrayList<Integer>(list);
+        for (int i = start; i <= n; i++) {
+            tmp.add(i);
+            helper(lists, tmp, i+1, n, k-1);
+            tmp.remove(tmp.size()-1);
+        }
+    } 
+}
+
+public class Solution {
+    public List<List<Integer>> combine(int n, int k) {
+        if (k == 0 || n == 0 || k > n) return Collections.emptyList();
+        List<List<Integer>> combs = new ArrayList<>();
+        for (int i = 1; i <= n; i++) combs.add(Arrays.asList(i));
+        for (int i = 2; i <= k; i++) {
+            List<List<Integer>> newCombs = new ArrayList<>();
+            for (int j = i; j <= n; j++) {
+                for (List<Integer> comb : combs) {
+                    if (comb.get(comb.size()-1) < j) {
+                        List<Integer> newComb = new ArrayList<>(comb);
+                        newComb.add(j);
+                        newCombs.add(newComb);
+                    }
+                }
+            }
+            combs = newCombs;
+        }
+        return combs;
+    }
+}
