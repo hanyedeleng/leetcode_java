@@ -1,0 +1,84 @@
+Implement an iterator to flatten a 2d vector.
+
+For example,
+Given 2d vector =
+
+[
+  [1,2],
+  [3],
+  [4,5,6]
+]
+By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,2,3,4,5,6].
+
+Hint:
+
+How many variables do you need to keep track?
+Two variables is all you need. Try with x and y.
+Beware of empty rows. It could be the first few rows.
+To write correct code, think about the invariant to maintain. What is it?
+The invariant is x and y must always point to a valid point in the 2d vector. Should you maintain your invariant ahead of time or right when you need it?
+Not sure? Think about how you would implement hasNext(). Which is more complex?
+Common logic in two different places should be refactored into a common method.
+
+维护两个迭代器：一个是输入的List<List<Integer>>的迭代器，它负责遍历List<Integer>的迭代器。另一个则是List<Integer>的迭代器，
+它负责记录当前到哪一个List的迭代器了。每次next时，我们先调用一下hasNext，确保当前List的迭代器有下一个值。
+
+
+class Vector2D {
+    private Iterator<List<Integer>> row = null;
+    private Iterator<Integer> col = null;
+    public Vector2D(List<List<Integer>> vec2d) {
+        row = vec2d.iterator();
+        if(row.hasNext())
+            col = row.next().iterator();
+    }
+
+    public int next() {
+        int lastValue = col.next();
+        return lastValue;
+    }
+
+    public boolean hasNext() {
+        if(col == null) {
+            return false;
+        }
+        if(col.hasNext()) {
+            return true;
+        } else {
+            while(row.hasNext()) {
+                col = row.next().iterator();
+                if(col.hasNext())
+                    return true;
+            }
+            return false;
+        }
+    }
+}
+/**
+ * Your Vector2D object will be instantiated and called as such:
+ * Vector2D i = new Vector2D(vec2d);
+ * while (i.hasNext()) v[f()] = i.next();
+ */
+
+public class Vector2D {
+
+    Iterator<List<Integer>> it;
+    Iterator<Integer> curr;
+    
+    public Vector2D(List<List<Integer>> vec2d) {
+        it = vec2d.iterator();
+    }
+
+    public int next() {
+        hasNext();
+        return curr.next();
+    }
+
+    public boolean hasNext() {
+        // 当前列表的迭代器为空，或者当前迭代器中没有下一个值时，需要更新为下一个迭代器
+        while((curr == null || !curr.hasNext()) && it.hasNext()){
+            curr = it.next().iterator();
+        }
+        return curr != null && curr.hasNext();
+    }
+}
