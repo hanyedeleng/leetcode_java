@@ -1,0 +1,43 @@
+Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
+
+Formally the function should:
+Return true if there exists i, j, k 
+such that arr[i] < arr[j] < arr[k] given 0 ≤ i < j < k ≤ n-1 else return false.
+Your algorithm should run in O(n) time complexity and O(1) space complexity.
+
+Examples:
+Given [1, 2, 3, 4, 5],
+return true.
+
+Given [5, 4, 3, 2, 1],
+return false.
+
+public class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        int min = Integer.MAX_VALUE;
+        int median = Integer.MAX_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > median) {
+                return true;
+            }else if (nums[i] > min) {
+                median = Math.min(median, nums[i]);
+            }else {
+                min = nums[i];
+            }
+        }
+        return false;
+    }
+}
+
+other's solution:
+Key idea: use two variables to store the value with increasing subsequence of length 1 and length 2, respectively. 
+Keep updating the two variables if we get to a smaller candidate ending up with the same length.
+public boolean increasingTriplet(int[] nums) {
+    int length1EndHere = 0x7fffffff, length2EndHere = 0x7fffffff;
+    for(int i=0, N=nums.length; i<N; i++) {
+        if(nums[i] > length2EndHere) return true;
+        else if(nums[i] > length1EndHere) length2EndHere = Math.min(nums[i], length2EndHere);
+        else length1EndHere = nums[i];
+    }
+    return false;
+}
