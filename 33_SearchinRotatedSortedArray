@@ -1,0 +1,101 @@
+33. Search in Rotated Sorted Array
+Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 0 1 2).
+
+You are given a target value to search. If found in the array return its index, otherwise return -1.
+You may assume no duplicate exists in the array.
+
+public class Solution {
+    public int search(int[] nums, int target) {
+        int ans = -1;
+        if (nums.length == 0 || nums.length == 1 && nums[0] != target) {
+            return ans;
+        }
+        int pivot = -1;
+        if (nums[0] > nums[nums.length-1]) {
+            int lo = 0;
+            int hi = nums.length - 1;
+            while (lo < hi && pivot == -1) {
+                int m = lo + (hi-lo)/2;
+                if (hi == m + 1) {
+                    if (nums[hi] < nums[m]) {
+                        pivot = hi;
+                        hi = m;
+                    }else{
+                        pivot = m;
+                        lo = m;
+                    }
+                }else {
+                    if (nums[m] > nums[lo]) {
+                        lo = m;
+                    }else if (nums[m] < nums[lo]) {
+                        hi = m;
+                    }
+                }
+            }
+        }
+        System.out.println(pivot);
+        if (pivot == -1) {
+            return binarySearch(nums, 0, nums.length - 1, target);    
+        }else {
+            if (target < nums[pivot] || target > nums[pivot-1]) {
+                return -1;
+            }
+            if (target >= nums[pivot] && target <= nums[nums.length-1]) {
+                return binarySearch(nums, pivot, nums.length - 1, target);    
+            }
+            if (target > nums[nums.length-1] && target <= nums[pivot-1]) {
+                return binarySearch(nums, 0, pivot-1, target);
+            }
+        }
+        return ans;
+    }
+    public int binarySearch(int[] nums, int lo, int hi, int target) {
+        while (lo <= hi) {
+            int m = lo + (hi-lo)/2;
+            if (target == nums[m]) {
+                return m;
+            }
+            if (target < nums[m]) {
+                hi = m - 1;
+            }else {
+                lo = m + 1;
+            }
+        }
+        return -1;
+    }
+}
+
+
+other's solution:
+public int search(int[] A, int target) {
+    // check if the target is in the sorted part, if so keep doing the binary search
+    // otherwise throw away the sorted part and do the same on the other part of the array
+    int start = 0;
+    int end = A.length-1;
+
+    while (start <= end) {
+        int mid = (start + end) / 2;
+        if (A[mid] == target) return mid;
+        if (A[start] <= A[mid]) {
+            // situation 1, red line
+            if (A[start] <= target && target <= A[mid]) {
+                end = mid-1;
+            }
+            else {
+                start = mid+1;
+            }
+        }
+        else {
+            // situation 2, green line
+            if (A[mid] <= target && target <= A[end]) {
+                start = mid+1;
+            }
+            else {
+                end = mid-1;
+            }
+        }
+    }
+    return -1;      
+}
+
