@@ -1,0 +1,69 @@
+78. Subsets
+Given a set of distinct integers, nums, return all possible subsets.
+
+Note:
+Elements in a subset must be in non-descending order.
+The solution set must not contain duplicate subsets.
+For example,
+If nums = [1,2,3], a solution is:
+
+[
+  [3],
+  [1],
+  [2],
+  [1,2,3],
+  [1,3],
+  [2,3],
+  [1,2],Input: {1,2,3,4,5}.
+］
+We'd start counting at 0, which is 00000 in binary, which means no flags are set, so no elements are 
+included (this would obviously be skipped if you don't want the empty subset) - output {}.
+Then 1 = 00001, indicating that only the last element would be included - output {5}.
+Then 2 = 00010, indicating that only the second last element would be included - output {4}.
+Then 3 = 00011, indicating that the last two elements would be included - output {4,5}.
+And so on, all the way up to 31 = 11111, indicating that all the elements would be included - output {1,2,3,4,5}
+
+void printPowerSet(char *set, int set_size)
+{
+    /*set_size of power set of a set with set_size
+      n is (2**n -1)*/
+    unsigned int pow_set_size = pow(2, set_size);
+    int counter, j;
+ 
+    /*Run from counter 000..0 to 111..1*/
+    for(counter = 0; counter < pow_set_size; counter++)
+    {
+      for(j = 0; j < set_size; j++)
+       {
+          /* Check if jth bit in the counter is set
+             If set then pront jth element from set */
+          if(counter & (1<<j))
+            printf("%c", set[j]);
+       }
+       printf("\n");
+    }
+}
+
+solution:
+public class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
+        if (nums.length == 0) {
+            return lists;
+        }
+        Arrays.sort(nums);
+        int len = nums.length;
+        int n = (int)Math.pow(2,len);
+        for (int i = 0; i < n; i++) {
+            ArrayList<Integer> list = new ArrayList<>();
+            for (int j = 0; j < len; j++) {
+                if ((i & (1<<j)) != 0) {
+                    list.add(nums[j]);
+                }
+            }
+            lists.add(list);
+        }
+        return lists;
+    }
+}
+//don't forget to sort
