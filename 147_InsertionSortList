@@ -1,0 +1,53 @@
+147. Insertion Sort List
+Sort a linked list using insertion sort.
+
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode ans = new ListNode(head.val);
+        ListNode curNode = ans;
+        ListNode preNode = ans;
+        head = head.next;
+        while (head != null) {
+            curNode = ans;
+            preNode = ans;
+            if (head.val <= curNode.val){
+                preNode = head;
+                head = head.next;
+                preNode.next = curNode;
+                ans = preNode;
+                continue;
+            }
+            while (curNode != null) {
+                if (head.val > curNode.val) {
+                    preNode = curNode;
+                    curNode = curNode.next;
+                }else {
+                    preNode.next = head;
+                    head = head.next;
+                    preNode.next.next = curNode;
+                    break;
+                }
+            }
+            if (curNode == null && head.val > preNode.val) {
+                preNode.next = head;
+                head = head.next;
+                preNode.next.next = null;
+            }
+            //head = head.next;
+        }
+        return ans;
+    }
+}
+
+One of the quotes is
+
+For God's sake, don't try sorting a linked list during the interview
+http://steve-yegge.blogspot.nl/2008/03/get-that-job-at-google.html
+
+So it might be better to actually copy the values into an array and sort them there.
+
+https://leetcode.com/discuss/29735/thoughts-from-a-google-interviewer
+http://steve-yegge.blogspot.nl/2008/03/get-that-job-at-google.html
