@@ -1,0 +1,85 @@
+106. Construct Binary Tree from Inorder and Postorder Traversal
+Given inorder and postorder traversal of a tree, construct the binary tree.
+
+Note:
+You may assume that duplicates do not exist in the tree.
+
+Inorder Traversal:
+Algorithm Inorder(tree)
+   1. Traverse the left subtree, i.e., call Inorder(left-subtree)
+   2. Visit the root.
+   3. Traverse the right subtree, i.e., call Inorder(right-subtree)
+
+Preorder Traversal:
+Algorithm Preorder(tree)
+   1. Visit the root.
+   2. Traverse the left subtree, i.e., call Preorder(left-subtree)
+   3. Traverse the right subtree, i.e., call Preorder(right-subtree)
+
+Postorder Traversal:
+Algorithm Postorder(tree)
+   1. Traverse the left subtree, i.e., call Postorder(left-subtree)
+   2. Traverse the right subtree, i.e., call Postorder(right-subtree)
+   3. Visit the root.
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        if (inorder.length == 0) {
+            return null;
+        }
+        int lo = 0;
+        int hi = inorder.length - 1;
+        TreeNode root = new TreeNode(postorder[hi]);
+        if (lo == hi) {
+            root.left = null;
+            root.right = null;
+            return root;
+        }else {
+            int m = findIndex(inorder, postorder[hi]);
+            root.left = buildTree(Arrays.copyOfRange(inorder, lo, m), Arrays.copyOfRange(postorder,lo, m));
+            root.right = buildTree(Arrays.copyOfRange(inorder, m+1, hi+1), Arrays.copyOfRange(postorder,m,hi));
+        }
+        return root;
+    } 
+
+    public int findIndex(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i++) {
+            if (target == nums[i]) {
+                return i;
+            }
+        }
+        return 0;
+    }
+}
+The the basic idea is to take the last element in postorder array as the root, find the position of the root in the inorder array;
+then locate the range for left sub-tree and right sub-tree and do recursion. Use a HashMap to record the index of root in the inorder array.
+public TreeNode buildTreePostIn(int[] inorder, int[] postorder) {
+    if (inorder == null || postorder == null || inorder.length != postorder.length)
+        return null;
+    HashMap<Integer, Integer> hm = new HashMap<Integer,Integer>();
+    for (int i=0;i<inorder.length;++i)
+        hm.put(inorder[i], i);
+    return buildTreePostIn(inorder, 0, inorder.length-1, postorder, 0, 
+                          postorder.length-1,hm);
+}
+
+private TreeNode buildTreePostIn(int[] inorder, int is, int ie, int[] postorder, int ps, int pe, 
+                                 HashMap<Integer,Integer> hm){
+    if (ps>pe || is>ie) return null;
+    TreeNode root = new TreeNode(postorder[pe]);
+    int ri = hm.get(postorder[pe]);
+    TreeNode leftchild = buildTreePostIn(inorder, is, ri-1, postorder, ps, ps+ri-is-1, hm);
+    TreeNode rightchild = buildTreePostIn(inorder,ri+1, ie, postorder, ps+ri-is, pe-1, hm);
+    root.left = leftchild;
+    root.right = rightchild;
+    return root;
+}
