@@ -1,0 +1,87 @@
+
+Reverse a linked list from position m to n. Do it in-place and in one-pass.
+For example:
+Given 1->2->3->4->5->NULL, m = 2 and n = 4,
+return 1->4->3->2->5->NULL.
+
+Note:
+Given m, n satisfy the following condition:
+1 ≤ m ≤ n ≤ length of list.
+
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null || head.next == null || m == n) {
+            return head;
+        }
+        
+        ListNode curNode = head;
+        ListNode setinal = head;
+        ListNode reverse = new ListNode(0);
+        reverse.next = null;
+        ListNode tmp = head;
+        int curIndex = 0;
+        while (curNode != null && curIndex < n) {
+            curIndex++;
+            if (curIndex+1 == m) {
+                setinal = curNode;
+            } 
+            if (curIndex >= m) {
+                tmp = new ListNode(curNode.val); // remember to new
+                tmp.next = reverse;
+                reverse = tmp;
+            }
+            curNode = curNode.next;
+        }
+        tmp = reverse;
+        while (reverse.next.next != null) {
+            reverse = reverse.next;
+        }
+        reverse.next = curNode;
+        if (m == 1) {
+            return tmp;
+        }
+        setinal.next = tmp;
+        return head;
+    }
+}
+
+other's solution:
+public ListNode reverseBetween(ListNode head, int m, int n) {
+    ListNode newhead = new ListNode(0);
+    newhead.next = head;
+
+    // tail1 is the (m-1)th node
+    ListNode tail1 = newhead;
+    int i = 1;
+    while (i < m) {
+        head = head.next;
+        tail1 = tail1.next;
+        i++;
+    }
+
+    // tail2 is the mth node
+    ListNode tail2 = head;
+    head = head.next;
+    i++;
+
+    while (i <= n) {
+        tail2.next = head.next;
+
+        // insert head after tail1
+        head.next = tail1.next;
+        tail1.next = head;
+
+        head = tail2.next;
+        i++;
+    }
+
+    return newhead.next;
+}
