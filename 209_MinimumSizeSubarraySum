@@ -1,0 +1,69 @@
+Given an array of n positive integers and a positive integer s, find the minimal length of a subarray of which the sum ≥ s. If there isn't one,'
+return 0 instead.
+For example, given the array [2,3,1,2,4,3] and s = 7,
+the subarray [4,3] has the minimal length under the problem constraint.
+click to show more practice.
+
+More practice:
+If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n).
+
+public class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        if (nums.length == 0) {
+            return 0;
+        }
+        int min = nums.length;
+        int[] sum = new int[nums.length];
+        sum[0] = nums[0];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] >= s) {
+                return 1;
+            }
+            if (sum[i] == 0) {
+                sum[i] = sum[i-1] + nums[i];
+            }
+            if (sum[i] >= s) {
+                int j = 0;
+                while (sum[i] - sum[j] >= s) {
+                    j++;
+                }
+                min = Math.min(min, i-j+1);
+            }
+        }
+        if (sum[nums.length-1] >= s) {
+            return min;
+        }
+        return 0;
+    }
+}
+
+TLE
+
+other's solution':
+public class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        if(nums.length == 0)return 0;       
+        int first = 0;
+        int second = 0;
+        int min = nums.length+1;
+        int sum = nums[0];
+        while(first<nums.length && second<=first)
+        {
+
+            if(sum<s){
+                first++;
+                if(first<nums.length)
+                sum+= nums[first];
+            }
+            else {
+                min = Math.min(first-second+1, min);
+                sum-=nums[second];
+                second++;
+
+            }
+        }
+
+        if(min == nums.length+1)return 0;
+        return min;
+    }
+}
