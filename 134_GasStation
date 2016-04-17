@@ -1,0 +1,86 @@
+There are N gas stations along a circular route, where the amount of gas at station i is gas[i].
+You have a car with an unlimited gas tank and it costs cost[i] of gas to travel from station i to its next station (i+1).
+You begin the journey with an empty tank at one of the gas stations.
+
+Return the starting gas station's index if you can travel around the circuit once, otherwise return -1.
+Note:
+The solution is guaranteed to be unique.
+
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int ans = -1;
+        if (gas.length == 0) {
+            return ans;
+        }
+        int start_index = 0;
+        for (int i = 0; i < gas.length; i++) {
+            start_index = i;
+            int sum_gas = 0;
+            int j;
+            for (j = i; j < gas.length; j++) {
+                sum_gas += gas[j];
+                sum_gas -= cost[j];
+                if (sum_gas < 0) {
+                    break;
+                }
+            }
+            if (j == gas.length) {
+                int t;
+                for (t = 0; t < start_index; t++) {
+                    sum_gas += gas[t];
+                    sum_gas -= cost[t];
+                    if (sum_gas < 0) {
+                        break;
+                    }
+                }
+                if (t == start_index) {
+                    ans = start_index;
+                    return ans;
+                }
+            }
+
+        }
+        return ans;
+    }
+}
+
+My solution is accepted. The idea is if the sum of the gas is greater than the sum of cost, there must be a solution.
+Next, accumulate the "surplus" or "deficit" along the circle, at one point, you will have the biggest deficit.
+Starting from the next station, you will never run into deficit so you can travel around the circle.
+
+The solution is so straightforward, makes me wonder am I missing anything?
+Added: Proof of existence of solution when the sum of gas is on less than the sum of cost
+With that assumption, let's check the situation where there is only one station Greatest Net Deficit (GND) Note that the
+net surplus(NS) is the result of all the previous stations, a negative NS mean the car can not reach the next station..
+If we start from the station from the station with the GND, which put the NS for that station at 0, then the NS will be positive
+for all station except the starting station, which can be positive or zero. Any way, the car can travel the circle.
+
+Next assume there are k station with equal GND, if we start from the first of them K1, we'll arrive in the next GND station K2
+with 0 gas left, which means we can take K1-K2 path out of the circle without affecting our solution. Keep doing that we'll get
+back to the previous situation. So we know that there will be a least one solution given the sum of gas is greater than the sum of the cost.
+
+ int canCompleteCircuit(vector<int> &gas, vector<int> &cost) 
+{
+
+        int totalgas = 0;
+        int totalcost = 0;
+        int maxdiff = 0;
+        int station = 0;
+        int diff = 0;
+        for (int i = 0; i < gas.size(); i++) {
+            totalgas += gas[i];
+            totalcost += cost[i];
+            diff = totalgas - totalcost;
+            if (diff < maxdiff) {
+                maxdiff = diff;
+                station = i;
+            }
+        }
+        if (totalcost > totalgas)
+            return -1;
+        station +=1;
+        if (station == gas.size())
+            station = 0;
+        return station;
+
+    }
