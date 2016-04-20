@@ -1,0 +1,31 @@
+
+Implement int sqrt(int x).
+Compute and return the square root of x.
+
+Since sqrt(x) is composed of binary bits, I calculate sqrt(x) by deciding every bit from the most significant to least significant. Since an integer n can have O(log n) bits with each bit decided within constant time, this algorithm has time limit O(log n), actually, because an Integer can have at most 32 bits, I can also say this algorithm takes O(32)=O(1) time.
+
+ public int sqrt(int x) {
+    if(x==0)
+        return 0;
+    int h=0;
+    while((long)(1<<h)*(long)(1<<h)<=x) // firstly, find the most significant bit
+        h++;
+    h--;
+    int b=h-1;
+    int res=(1<<h);
+    while(b>=0){  // find the remaining bits
+        if((long)(res | (1<<b))*(long)(res |(1<<b))<=x)
+            res|=(1<<b);
+        b--;
+    }
+    return res;
+}
+
+public class Solution {
+    public int mySqrt(int x) {
+        if(x < 4) return x == 0 ? 0 : 1;
+        int res = 2 * mySqrt(x/4);
+        if((res+1) * (res+1) <= x && (res+1) * (res+1) >= 0) return res+1;
+        return res;
+    }
+}
