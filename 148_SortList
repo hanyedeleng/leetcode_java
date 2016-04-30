@@ -1,0 +1,111 @@
+Sort a linked list in O(n log n) time using constant space complexity.
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode sortList(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(head.val);
+        head = head.next;
+        while (head != null) {
+            int low = 0; int hi = list.size()-1;
+            while (low <= hi) {
+                int m = low + (hi-low)/2;
+                if (head.val == list.get(m)) {
+                    break;
+                }else if (head.val > list.get(m)) {
+                    low = m+1;
+                }else {
+                    hi = m-1;
+                }
+            }
+            list.add(low+(hi-low)/2, head.val);
+            head = head.next;
+        }
+        ListNode cur = new ListNode(0);
+        ListNode new_head = cur;
+        for (int i = 0; i < list.size();i++) {
+            cur.next = new ListNode(list.get(i));
+            cur = cur.next;
+        }
+        return new_head.next;
+    }
+}
+
+Nice problem. I use a non-recurisve way to write merge sort. For example,
+the size of ListNode is 8, Round #1 block_size = 1
+(a1, a2), (a3, a4), (a5, a6), (a7, a8)
+Compare a1 with a2, a3 with a4 ...
+
+Round #2 block_size = 2
+(a1, a2, a3, a4), (a5, a6, a7, a8)
+merge two sorted arrays (a1, a2) and (a3, a4), then merge tow sorted
+ arrays(a5, a6) and (a7, a8)
+
+Round #3 block_size = 4
+(a1, a2, a3, a4, a5, a6, a7, a8)
+merge two sorted arrays (a1, a2, a3, a4), and (a5, a6, a7, a8)
+No need for round #4 cause block_size = 8 >= n = 8
+
+public class Solution {
+
+    //merge two sorted list, return result head
+    public ListNode merge(ListNode h1, ListNode h2){
+        if(h1 == null){
+            return h2;
+        }
+        if(h2 == null){
+            return h1;
+        }
+
+        if(h1.val < h2.val){
+            h1.next = merge(h1.next, h2);
+            return h1;
+        }
+        else{
+            h2.next = merge(h1, h2.next);
+            return h2;
+        }
+
+    }
+
+    public ListNode sortList(ListNode head) {
+        //bottom case
+        if(head == null){
+            return head;
+        }
+        if(head.next == null){
+            return head;
+        }
+
+        //p1 move 1 step every time, p2 move 2 step every time, pre record node before p1
+        ListNode p1 = head;
+        ListNode p2 = head;
+        ListNode pre = head;
+
+        while(p2 != null && p2.next != null){
+            pre = p1;
+            p1 = p1.next;
+            p2 = p2.next.next;
+        }
+        //change pre next to null, make two sub list(head to pre, p1 to p2)
+        pre.next = null;
+
+        //handle those two sub list
+        ListNode h1 = sortList(head);
+        ListNode h2 = sortList(p1);
+
+        return merge(h1, h2);
+
+    }
+
+}
