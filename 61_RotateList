@@ -1,0 +1,70 @@
+Given a list, rotate the list to the right by k places, where k is non-negative.
+
+For example:
+Given 1->2->3->4->5->NULL and k = 2,
+return 4->5->1->2->3->NULL.
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+        ListNode fast = head;
+        int i = 0;
+        while (fast.next != null && i < k) {
+            i++;
+            fast = fast.next;
+        }
+        if (fast.next == null) {
+            k = k % (i+1);
+            if (k == 0) {
+                return head;
+            }
+            fast = head;
+            i = 0;
+            while (fast.next != null && i < k) {
+                i++;
+                fast = fast.next;
+            }
+        }
+        ListNode slow = head;
+        while (fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+        ListNode new_head = new ListNode(0);
+        new_head.next = slow.next;
+        
+        slow.next = null;
+        fast.next = head;
+        return new_head.next;
+        
+    }
+}
+
+public ListNode rotateRight(ListNode head, int n) {
+    if (head==null||head.next==null) return head;
+    ListNode dummy=new ListNode(0);
+    dummy.next=head;
+    ListNode fast=dummy,slow=dummy;
+
+    int i;
+    for (i=0;fast.next!=null;i++)//Get the total length 
+        fast=fast.next;
+
+    for (int j=i-n%i;j>0;j--) //Get the i-n%i th node
+        slow=slow.next;
+
+    fast.next=dummy.next; //Do the rotation
+    dummy.next=slow.next;
+    slow.next=null;
+
+    return dummy.next;
+}
