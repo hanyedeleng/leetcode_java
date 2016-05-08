@@ -1,0 +1,42 @@
+Given a binary tree, determine if it is a valid binary search tree (BST).
+
+Assume a BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+confused what "{1,#,2,3}" means?"
+
+
+public class Solution {
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+        if (root.left == null && root.right == null) {
+            return true;
+        }
+        return check(root, Integer.MAX_VALUE, Integer.MIN_VALUE);
+    }
+
+    public boolean check(TreeNode node, int max, int min) {
+        if (node == null) {
+            return true;
+        }
+        if (node.val > max || node.val < min) {
+            return false;
+        }
+
+        // if node's value is INT_MIN, it should not have left child any more
+        if (node.val == Integer.MIN_VALUE && node.left != null) {
+            return false;
+        }
+
+        // if node's value is INT_MAX, it should not have right child any more
+        if (node.val == Integer.MAX_VALUE && node.right != null) {
+            return false;
+        }
+
+        return check(node.left, node.val - 1, min) && check(node.right, max, node.val + 1);
+    }
+}
