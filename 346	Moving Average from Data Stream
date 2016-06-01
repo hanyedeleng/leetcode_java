@@ -1,0 +1,44 @@
+346	Moving Average from Data Stream
+Given a stream of integers and a window size, calculate the moving average of all integers in the
+sliding window.
+
+For example,
+MovingAverage m = new MovingAverage(3);
+m.next(1) = 1
+m.next(10) = (1 + 10) / 2
+m.next(3) = (1 + 10 + 3) / 3
+m.next(5) = (10 + 3 + 5) / 3
+
+public class MovingAverage {
+  private Deque<Integer> dequeue = new LinkedList<>();
+  private int size;
+  private long sum;
+
+  public MovingAverage(int size) {
+  	this.size = size;
+  }
+
+  public double next(int val) {
+    if (dequeue.size() == size) {
+      sum -= dequeue.removeFirst();    	
+    }
+
+    dequeue.addLast(val);
+    sum+=val;
+    return (double)sum/dequeue.size();
+  }
+}
+
+//.add() .addFirst() .addLast() .getFirst() .getLast() .remove() .removeFirst(). .removeLast();
+add(element): Adds an element to the tail.
+addFirst(element): Adds an element to the head.
+addLast(element): Adds an element to the tail.
+offer(element): Adds an element to the tail and returns a boolean to explain if the insertion was successful.
+offerFirst(element): Adds an element to the head and returns a boolean to explain if the insertion was successful.
+offerLast(element): Adds an element to the tail and returns a boolean to explain if the insertion was successful.
+iterator(): Returna an iterator for this deque.
+descendingIterator(): Returns an iterator that has the reverse order for this deque.
+push(element): Adds an element to the head.
+pop(element): Removes an element from the head and returns it.
+removeFirst(): Removes the element at the head.
+removeLast(): Removes the element at the tail
