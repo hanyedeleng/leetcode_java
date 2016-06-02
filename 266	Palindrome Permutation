@@ -22,7 +22,8 @@ public class Solution {
 	}
 }
 
-
+// .add(), .clear(), .contains(Object o), containsAll(Collection<?> c), isEmpty(), .remove()
+// .removeAll(Collection<?> c), size(), toArray()
 
 
 
