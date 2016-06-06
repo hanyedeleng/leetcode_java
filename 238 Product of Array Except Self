@@ -52,22 +52,22 @@ other's solution:
 The idea is to traverse twice. First traversal will get the product before current element. 
 Second traversal will start from the end, and get the product after current element.
 public int[] productExceptSelf(int[] nums) {
-            int len = nums.length;
-            int[] res = new int[len];
-            if(len == 0 ){
-                return res;
-            }
-            res[0] = 1;
-            for(int i=1; i<len; i++){
-                res[i] = res[i-1]*nums[i-1];
-            }
-            int rearProduct = 1;
-            for(int j=len-1; j>=0; j--){
-                res[j] = res[j] *rearProduct;
-                rearProduct *= nums[j];
-            }
-            return res;
-        }
+    int len = nums.length;
+    int[] res = new int[len];
+    if(len == 0 ){
+        return res;
+    }
+    res[0] = 1;
+    for(int i=1; i<len; i++){
+        res[i] = res[i-1]*nums[i-1];
+    }
+    int rearProduct = 1;
+    for(int j=len-1; j>=0; j--){
+        res[j] = res[j] *rearProduct;
+        rearProduct *= nums[j];
+    }
+    return res;
+}
         
 
 Tips:
