@@ -29,6 +29,37 @@ public class Solution {
 
 }
 
+my another solution:
+public class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums.length == 0) {
+            return null;
+        }
+        
+        TreeNode root = new TreeNode(nums[nums.length/2]);
+        helper(root, nums, 0, nums.length-1);
+        return root;
+    }
+    public void helper(TreeNode root, int[] nums, int lo, int hi) {
+        if (lo > hi) {
+            return;
+        }
+        System.out.println(root.val);
+        int m = lo + (hi-lo)/2;
+        root.val = nums[m];
+        if (lo <= m-1) {
+            root.left = new TreeNode(0);
+            helper(root.left, nums, lo, m-1);
+
+        }
+        if (m+1 <= hi) {
+            root.right = new TreeNode(0);
+            helper(root.right, nums, m+1, hi);
+        }
+
+    }
+}
+
 Tips:
   1. remember to check return type whether the same type of the method
   2. nums == null or length < 1;
