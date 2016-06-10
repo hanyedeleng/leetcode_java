@@ -1,3 +1,4 @@
+334	Increasing Triplet Subsequence
 Given an unsorted array return whether an increasing subsequence of length 3 exists or not in the array.
 
 Formally the function should:
@@ -12,6 +13,29 @@ return true.
 Given [5, 4, 3, 2, 1],
 return false.
 
+public class Solution {
+    public boolean increasingTriplet(int[] nums) {
+        if (nums.length < 3) {
+            return false;
+        }
+        
+        int[] ans = new int[nums.length];
+        ans[0] = 1;
+        int max = 0;
+        for (int i = 0; i < nums.length-1; i++) {
+            for (int j = i+1; j < nums.length; j++) {
+                if (nums[j] > nums[i]) {
+                    ans[j] = Math.max(ans[j], Math.max(ans[i]+1,2));
+                    max = Math.max(max, ans[j]);
+                        if (max == 3) {
+                            return true;
+                        }
+                }
+            }
+        }
+        return false;
+    }
+}
 public class Solution {
     public boolean increasingTriplet(int[] nums) {
         int min = Integer.MAX_VALUE;
