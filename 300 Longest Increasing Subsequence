@@ -79,7 +79,8 @@ public class Solution {
         return lo;
     }
 }
-
+Very clear code! However, it will not return the actual longest increasing subsequence, despite it will return the correct length.
+For example, {10, 9, 2, 5, 6, 3, 101, 18} returns [2, 3, 6, 18]
 
 
 
