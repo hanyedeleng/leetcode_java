@@ -9,6 +9,80 @@ Your algorithm should run in O(n2) complexity.
 
 Follow up: Could you improve it to O(n log n) time complexity?
 
+
+"*********************************"
+300	Longest Increasing Subsequence
+Given an unsorted array of integers, find the length of longest increasing subsequence.
+
+For example,
+Given [10, 9, 2, 5, 3, 7, 101, 18],
+The longest increasing subsequence is [2, 3, 7, 101], therefore the length is 4. Note
+that there may be more than one LIS combination, it is only necessary for you to return the
+length.
+Your algorithm should run in O(n2) complexity.
+
+Follow up: Could you improve it to O(n log n) time complexity?
+// I got it right;
+public class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if (nums.length <= 0) {
+            return nums.length;
+        }
+        if (nums.length == 2) {
+            return nums[1]>nums[0]?2:1;
+        }
+        
+        int[] ans = new int [nums.length];
+        ans[0] = 1;
+        int max = 1;
+        for (int i = 0; i < nums.length-1; i++) {
+            for (int j = i+1; j < nums.length; j++) {
+                if (nums[j] > nums[i]) {
+                    ans[j] = Math.max(ans[j],Math.max(ans[i]+1, 2)); // this line is the most important
+                    max = Math.max(max, ans[j]);
+                }       
+            }
+        }
+        return max;
+    }
+}
+
+public class Solution {
+    public int lengthOfLIS(int[] nums) 
+    {
+        List<Integer> sequence = new ArrayList();
+        for(int n : nums) update(sequence, n);
+    
+        return sequence.size();
+    }
+    
+    private void update(List<Integer> seq, int n)
+    {
+        if(seq.isEmpty() || seq.get(seq.size() - 1) < n) seq.add(n);
+        else
+        {
+            seq.set(findFirstLargeEqual(seq, n), n);
+        }
+    }
+    
+    private int findFirstLargeEqual(List<Integer> seq, int target)
+    {
+        int lo = 0;
+        int hi = seq.size() - 1;
+        while(lo < hi)
+        {
+            int mid = lo + (hi - lo) / 2;
+            if(seq.get(mid) < target) lo = mid + 1;
+            else hi = mid;
+        }
+    
+        return lo;
+    }
+}
+
+
+
+
 http://www.geeksforgeeks.org/longest-monotonically-increasing-subsequence-size-n-log-n/
 
 // Java program to find length of longest increasing subsequence
