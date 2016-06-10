@@ -22,3 +22,34 @@ public TreeNode toBST(ListNode head, ListNode tail){
     return thead;
 }
 }
+
+
+109	Convert Sorted List to Binary Search Tree
+Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.
+public class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+        if (head == null) {
+            return null;
+        }
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        while (head != null) {
+            list.add(head.val);
+            head = head.next;
+        }
+        
+        TreeNode root = new TreeNode(list.get(list.size()/2));
+        return helper(root, list, 0, list.size()-1);
+    }
+    
+    public TreeNode helper(TreeNode root, ArrayList<Integer> list, int lo, int hi) {
+        if (lo > hi) {
+            return null;
+        }
+        int m = lo + (hi-lo)/2;
+        root = new TreeNode(list.get(m)); //************ this is the must be statement
+        root.left = helper(root.left, list, lo, m-1);
+        root.right = helper(root.right, list, m+1, hi);
+        return root;
+    }
+}
