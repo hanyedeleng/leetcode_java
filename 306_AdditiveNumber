@@ -17,6 +17,9 @@ The idea is quite straight forward. Generate the first and second of the sequenc
 
 
 https://leetcode.com/discuss/70102/java-recursive-and-iterative-solutions
+其实只要前两个数固定了，后面是否能划分就是确定的了。
+因为前两个数决定了第三个数，第三个数和第二个数决定了第四个。。。
+所以，枚举前两个数的终点位置，进行递归判断即可。
 
 Java Recursive
 
