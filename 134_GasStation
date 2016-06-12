@@ -5,7 +5,56 @@ You begin the journey with an empty tank at one of the gas stations.
 Return the starting gas station's index if you can travel around the circuit once, otherwise return -1.
 Note:
 The solution is guaranteed to be unique.
+public class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int totalGas = 0;
+        int totalCost = 0;
+        int tank = 0;
+        int begin = 0;
+        for (int i = 0; i < gas.length; i++)
+        {
+            totalGas += gas[i];
+            totalCost += cost[i];
+            tank += (gas[i] - cost[i]);
+            if (tank < 0)
+            {
+                begin = i + 1;
+                tank = 0;
+            }
+        }
 
+        return (totalGas >= totalCost ? begin : -1);
+    }
+}
+
+
+从第一个油站出发：
+
+此时，油量为 tank += gas[0] - cost[0]。
+如果tank > 0，说明我们可以到达下一个油站。
+到达油站 i 时：
+
+此时，油量为 tank += gas[i] - cost[i]。
+
+如果tank >= 0，可以到达下一个油站，继续往下走。
+可是，如果 tank < 0呢？
+这时，我们不可能到达下一个油站（i + 1）了。
+并且，假设我们是从 begin 出发的，不仅从 begin 到不了油站 i + 1，并且从 begin 到 i 之间的任何一个油站出发都不可能到达油站 i + 1。
+
+因此，我们需要把起点设置为油站 i + 1，油箱清空，重新开始往下走。
+最终，begin 总是会指向一个有可能走完一圈的开始地点。
+
+但是，从 begin 出发，究竟能否走完一圈呢？
+
+记录所有油站的总供油量：totalGas = gas[0] + gas[1] + ... + gas[n - 1]。
+以及总耗油量：totalCost = cost[0] + cost[1] + ... + cost[n - 1]。
+
+如果totalGas >= totalCost，那么肯定能走完一圈的。而且，begin 所在的位置就是那个起点（因为无效的起点已经在tank < 0时被排除掉了）。
+如果totalGas < totalCost，那肯定是走不完一圈了。
+
+文／floodliu（简书作者）
+原文链接：http://www.jianshu.com/p/0d8c6190a125
+著作权归作者所有，转载请联系作者获得授权，并标注“简书作者”。
 public class Solution {
     public int canCompleteCircuit(int[] gas, int[] cost) {
         int ans = -1;
