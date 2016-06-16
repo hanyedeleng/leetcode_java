@@ -1,0 +1,41 @@
+128 Longest Consecutive Sequence
+Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+For example,
+Given [100, 4, 200, 1, 3, 2],
+The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.
+Your algorithm should run in O(n) complexity.
+
+I have used a hashmap in my solution. The keyset of the map stores the number in the given array. The 
+entryset stores the upper/lower end of sequence if the key is an lower/upper end of an existing consecutive
+sequence.
+For a new number ,we have four conditions 
+1) It will be a new lower end.-->Refresh both upper and lower end
+2) It will be a new upper end.-->Refresh both upper and lower end 
+3) Neither-->It is both upper and lower end by itself-->Add the number to the keyset with the value as 
+itself. 
+4) Both-->It connects two existing sequence.Its own value is not important-->Refresh both upper and lower 
+end.Add the number to the keyset with the value as itself.
+
+public class Solution {
+    public int longestConsecutive(int[] num) {
+        Map<Integer, Integer> seq = new HashMap<Integer, Integer>();
+        int longest = 0;
+        for (int i = 0; i < num.length; i++) {
+            if (seq.containsKey(num[i])) continue;
+
+            int low= num[i],upp=num[i];
+
+            if (seq.containsKey(num[i] - 1)) // Get the lowerbound if existed
+                low = seq.get(num[i] - 1);
+            if (seq.containsKey(num[i] + 1)) // Get the upperbound if existed
+                upp = seq.get(num[i] + 1);
+
+            longest = Math.max(longest, (upp - low)+ 1);
+
+            seq.put(num[i],num[i]);          //Handle   3 & 4. See Beginning
+            seq.put(low, upp);               //Handle 1 2 & 4 
+            seq.put(upp, low);               //Handle 1 2 & 4 
+        }
+        return longest;
+    }
+}
