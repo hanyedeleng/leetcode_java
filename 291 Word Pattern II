@@ -1,0 +1,68 @@
+291 Word Pattern II
+Given a pattern and a string str, find if str follows the same pattern.
+Here follow means a full match, such that there is a bijection between a letter in pattern and a non-empty 
+substring in str.
+
+Examples:
+pattern = "abab", str = "redblueredblue" should return true.
+pattern = "aaaa", str = "asdasdasdasd" should return true.
+pattern = "aabb", str = "xyzabcxzyabc" should return false. 
+Notes:
+You may assume both pattern and str contains only lowercase letters.
+
+A typical backtracking. I use two hashmap to guarantee one pattern only map to exact one string. Note we 
+need to remove new added element in hashmap if current splitted string is illegal
+
+public class Solution {
+Map<Character,String> map =new HashMap();
+Set<String> set =new HashSet();
+public boolean wordPatternMatch(String pattern, String str) {
+    if(pattern.isEmpty()) return str.isEmpty();
+    if(map.containsKey(pattern.charAt(0))){
+        String value= map.get(pattern.charAt(0));
+        if(str.length()<value.length() || !str.substring(0,value.length()).equals(value)) return false;
+        if(wordPatternMatch(pattern.substring(1),str.substring(value.length()))) return true;
+    }else{
+        for(int i=1;i<=str.length();i++){
+            if(set.contains(str.substring(0,i))) continue;
+            map.put(pattern.charAt(0),str.substring(0,i));
+            set.add(str.substring(0,i));
+            if(wordPatternMatch(pattern.substring(1),str.substring(i))) return true;
+            set.remove(str.substring(0,i));
+            map.remove(pattern.charAt(0));
+        }
+    }
+    return false;
+}
+
+
+public boolean wordPatternMatch(String pattern, String str) {
+        HashMap map = new HashMap();
+        return dfs(pattern, 0, str, 0, map);
+    }
+    private boolean dfs(String pattern, int i, String str, int j, HashMap map){
+        if(i == pattern.length() && j == str.length()){// 如果刚好搜完. 返回true
+            return true;
+        }
+        if(i == pattern.length() || j == str.length()){// 如果一个完了, 另一个没完, 返回false
+            return false;
+        }
+        char c = pattern.charAt(i);
+        for(int k = j; k < str.length(); k++){
+            if(map.get(c) == map.get(str.substring(j, k+1))){//如果map中的i对应的值(可以是null) 和 sbustring对应的值相同(也可以是null)
+                Integer val = (Integer)map.get(c);
+                if(val == null){//如果是null
+                    map.put(pattern.charAt(i), i);//把pattern的<char,integer>放map中
+                    map.put(str.substring(j, k+1), i);//把string的<string,integer>放map中
+                }
+                if(dfs(pattern, i+1, str, k+1, map)){//dfs
+                    return true;
+                }
+                if(val == null){// backtracking
+                    map.remove(pattern.charAt(i));
+                    map.remove(str.substring(j, k+1));
+                }
+            }
+        }
+        return false;
+    }
