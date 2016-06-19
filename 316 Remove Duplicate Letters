@@ -1,0 +1,64 @@
+316 Remove Duplicate Letters
+Given a string which contains only lowercase letters, remove duplicate letters so that every letter 
+appear once and only once. You must make sure your result is the smallest in lexicographical order 
+among all possible results.
+
+Example:
+Given "bcabc"
+Return "abc"
+
+Given "cbacdcbc"
+Return "acdb"
+
+First, given "bcabc", the solution should be "abc". If we think about this problem intuitively, you would
+sort of go from the beginning of the string and start removing one if there is still the same character 
+left and a smaller character is after it. Given "bcabc", when you see a 'b', keep it and continue with 
+the search, then keep the following 'c', then we see an 'a'. Now we get a chance to get a smaller lexi 
+order, you can check if after 'a', there is still 'b' and 'c' or not. We indeed have them and "abc" will 
+be our result.
+Come to the implementation, we need some data structure to store the previous characters 'b' and 'c', and 
+we need to compare the current character with previous saved ones, and if there are multiple same 
+characters, we prefer left ones. This calls for a stack.
+After we decided to use stack, the implementation becomes clearer. From the intuition, we know that we 
+need to know if there are still remaining characters left or not. So we need to iterate the array and 
+save how many each characters are there. A visited array is also required since we want unique character 
+in the solution. The line while(!stack.isEmpty() && stack.peek() > c && count[stack.peek()-'a'] > 0) 
+checks that the queued character should be removed or not, like the 'b' and 'c' in the previous example. 
+After removing the previous characters, push in the new char and mark the visited array.
+Time complexity: O(n), n is the number of chars in string.
+Space complexity: O(n) worst case.
+
+The basic idea is to go through the given string char by char. If the current char has been used in the 
+solution string, continue our loop to next char; If not, keep replacing the last char of current solution 
+string with our current char being considered if the current character is smaller, then add current char 
+to solution string.
+
+The process requires an int array and a Boolean array to store the appearances and status(used or not) 
+of each letter. And a stack is used to conveniently push and pop chars.
+
+public String removeDuplicateLetters(String s) {
+    Stack<Character> stack = new Stack<>();
+    int[] count = new int[26];
+    char[] arr = s.toCharArray();
+    for(char c : arr) {
+        count[c-'a']++;
+    }
+    boolean[] visited = new boolean[26];
+    for(char c : arr) {
+        count[c-'a']--;
+        if(visited[c-'a']) {
+            continue;
+        }
+        while(!stack.isEmpty() && stack.peek() > c && count[stack.peek()-'a'] > 0) {
+            visited[stack.peek()-'a'] = false;
+            stack.pop();
+        }
+        stack.push(c);
+        visited[c-'a'] = true;
+    }
+    StringBuilder sb = new StringBuilder();
+    for(char c : stack) {
+        sb.append(c);
+    }
+    return sb.toString();
+}
