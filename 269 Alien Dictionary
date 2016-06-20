@@ -1,0 +1,87 @@
+269 Alien Dictionary 
+There is a new alien language which uses the latin alphabet. However, the order among letters are 
+unknown to you. You receive a list of words from the dictionary, wherewords are sorted lexicographically 
+by the rules of this new language. Derive the order of letters in this language.
+For example,
+Given the following words in dictionary,
+[
+  "wrt",
+  "wrf",
+  "er",
+  "ett",
+  "rftt"
+]
+
+The correct order is: "wertf".
+
+Note:
+You may assume all letters are in lowercase.
+If the order is invalid, return an empty string.
+There may be multiple valid order of letters, return any one of them is fine.
+简化了一下。思路不那么乱了。有几个特殊的点要注意:
+
+输入中只含有26个小写字母，所以我们可以可以用一个int[26]来计算inDegree
+输出的时候只输出在words里出现过的字符，所以先把字符保存在一个set里。 其实这里也可以和map一起遍历，但需要不少额外的边界条件
+注意单词内部的顺序没有关系，只有单词和前一个单词相同位置不同字间才有先后顺序。
+要注意图的adjancency lists表示结构， 使用Map<Character, Set<Character>>可能会比 Map<Character, List<Character>>
+快。同时要注意这道题里key保存的是先输出的字符，value里面保存的是后输出的字符。inDegree里也是后输出字符的value被增加
+结尾的时候假如sb.length() < set.size()，说明无法组成一个topological order，我们返回""，否则返回一个topological sorted 
+string   sb.toString();
+
+public class Solution {
+    public String alienOrder(String[] words) {   // Topological sorting - Kahn's Algorithm
+        if(words == null || words.length == 0) {
+            return "";
+        }
+        Map<Character, Set<Character>> graph = new HashMap<>();
+        Set<Character> set = new HashSet<>();
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                set.add(word.charAt(i));
+            }
+        }
+        
+        int[] inDegree = new int[26];
+        for (int k = 1; k < words.length; k++) {
+            String preStr = words[k - 1];
+            String curStr = words[k];
+            for (int i = 0; i < Math.min(preStr.length(), curStr.length()); i++) {
+                char preChar = preStr.charAt(i);
+                char curChar = curStr.charAt(i);
+                if (preChar != curChar) {
+                    if (!graph.containsKey(preChar)) {
+                        graph.put(preChar, new HashSet<Character>());
+                    }
+                    if (!graph.get(preChar).contains(curChar)) {
+                        inDegree[curChar - 'a']++;
+                    }                    
+                    graph.get(preChar).add(curChar);
+                    break;
+                }
+            }
+        }
+        Queue<Character> queue = new LinkedList<>();
+        for (int i = 0; i < inDegree.length; i++) {
+            if (inDegree[i] == 0) {
+                char c = (char)('a' + i);
+                if (set.contains(c)) {
+                    queue.offer(c);    
+                }
+            }
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!queue.isEmpty()) {
+            char c = queue.poll();
+            sb.append(c);
+            if (graph.containsKey(c)) {
+                for (char l : graph.get(c)) {
+                    inDegree[l - 'a']--;
+                    if (inDegree[l - 'a'] == 0) {
+                        queue.offer(l);
+                    }
+                }
+            }
+        }
+        return sb.length() != set.size() ? "" : sb.toString();
+    }
+}
