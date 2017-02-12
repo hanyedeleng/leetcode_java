@@ -28,3 +28,19 @@ public class Solution {
         return null;
     }
 }
+
+https://www.quora.com/How-does-Floyds-cycle-finding-algorithm-work
+Distance travelled by slowPointer before meeting = x + y
+Distance travelled by fastPointer before meeting = (x + y + z) + y
+                                                                                = x + 2y + z
+
+Since fastPointer travels with double the speed of slowPointer, and time is constant for both when the reach the meeting point.
+
+So by using simple speed, time and distance relation
+                     2(x+y)=  x+2y+z
+               => x+2y+z = 2x+2y
+               => x=z
+
+Hence by moving slowPointer to start of linked list, and making both slowPointer and fastPointer to move one node at a time, they both have same distance to cover .
+
+They will reach at the point where the loop starts in the linked list.
