@@ -2,6 +2,38 @@ Given an array of integers, every element appears three times except for one. Fi
 Note:
 Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
 
+http://blog.csdn.net/exceptional_derek/article/details/17636909
+public int singleNumber(int[] A) {  
+       int ones=0;  
+       int twos=0;  
+       int xthrees=0;  
+       for(int i = 0;i <A.length;i++){  
+               twos ^= (ones&A[i]);  
+               ones ^= A[i];  
+               xthrees = ~(ones&twos);  
+               twos &= xthrees;  
+               ones &=xthrees;  
+        }  
+        return ones;  
+   }
+
+http://www.wengweitao.com/lintcode-single-number-i-ii-iii-luo-dan-de-shu.html
+变量once作为一个掩码，若once的二进制表示中的一个位置为1，表示目前使该位为1的数只出现一次
+变量twice作为一个掩码，若twice的二进制表示中的一个位置为1，表示目前使该位置为1的数出现了2次
+变量third作为一个掩码，若third的二进制表示中的一个位置为1，表示目前使该位置为1的数出现了3次
+若之前出现一次（表示为once中对应的位为1），A[i]中又出现（表示为A[i]中对应的位置为1），那么twice中对应的位就为1；
+若之前的once中出现，而A[i]中又出现，那么就不是出现一次，将对应的位取0
+once中出现一次，twice出现两次，也就是出现了3次
+需要将once和twice中出现3次的位都置为0
+以上的代码涉及到比较多的位运算，可能不大好理解。举个具体的例子：
+
+once： 100101 使第1、3、6个bit为1的数出现3次
+
+twice： 010101 使第1、3、5个bit为1的数出现了2次
+
+third： 000101 根据once和twice可以得到third，第1和3个bit为1的数出现了3次。
+
+以上算法的时间复杂度为O(n)，空间复杂度为O(1)。
 
 
 public class Solution {
