@@ -4,6 +4,52 @@ For example,
 [1,2,3] have the following permutations:
 [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1].
 
+题解：
+http://www.cnblogs.com/springfor/p/3888044.html
+这道题就用循环递归解决子问题。
+
+因为求所有组合，这就意味着不能重复使用元素，要用visited数组。
+
+有因为是所有可能的组合，所以循环length次，就是这里面每位都有可能有length个可能性。
+
+正因为如此，每一层递归就不需要传递一个start点，告诉他从哪开始（因为都是从头开始循环）。
+
+ 
+ 1     public ArrayList<ArrayList<Integer>> permute(int[] num) {
+ 2         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+ 3         ArrayList<Integer> item = new ArrayList<Integer>();
+ 4         
+ 5         if(num.length==0||num==null)
+ 6             return res;
+ 7         boolean[] visited = new boolean[num.length];  
+ 8         
+ 9         permutation_helper(num,res,item,visited);
+10         return res;
+11     }
+12     
+13     public void permutation_helper(int[] num, ArrayList<ArrayList<Integer>> res, ArrayList<Integer> item,boolean[] visited){
+14         if(item.size()==num.length){
+15             res.add(new ArrayList<Integer>(item));
+16             return;
+17         }
+18         
+19         for(int i = 0; i<num.length;i++){
+20             if(!visited[i]){
+21                 item.add(num[i]);
+22                 visited[i]=true;
+23                 permutation_helper(num,res,item,visited);
+24                 item.remove(item.size()-1);
+25                 visited[i]=false;
+26             }
+27         }
+28     }
+
+
+
+
+
+
+
 public class Solution {
     public List<List<Integer>> permute(int[] nums) {
       List<list<Interger>> result = ArrayList<ArrayList<>()>();
