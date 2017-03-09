@@ -1,0 +1,49 @@
+Given a List of words, return the words that can be typed using letters of alphabet on only one row's of American keyboard 
+like the image below.
+
+public class Solution {
+    public String[] findWords(String[] words) {
+        // java string indexOf -1 not exist
+        String row1 = new String("qwertyuiop");
+        String row2 = new String("asdfghjkl");
+        String row3 = new String("zxcvbnm");
+        ArrayList<String> result = new ArrayList<>();
+        
+        if (words.length == 0) return new String[0];
+        for (int i = 0; i < words.length; i++) {
+            if (words[i].length() == 1) {
+                result.add(words[i]);
+                continue;
+            }
+            char c = words[i].toLowerCase().charAt(0);
+            if (row1.indexOf(c) >= 0) {
+                for (int j = 1; j < words[i].length(); j++) {
+                    c = words[i].toLowerCase().charAt(j);
+                    if (row1.indexOf(c) < 0) { break;}
+                    if (j == words[i].length() - 1) {result.add(words[i]);}
+                }
+                
+            }else if (row2.indexOf(c) >= 0) {
+                for (int j = 1; j < words[i].length(); j++) {
+                    c = words[i].toLowerCase().charAt(j);
+                    if (row2.indexOf(c) < 0) { break;}
+                    if (j == words[i].length() - 1) {result.add(words[i]);}
+
+                }
+            }else if (row3.indexOf(c) >= 0) {
+                for (int j = 1; j < words[i].length(); j++) {
+                    c = words[i].toLowerCase().charAt(j);
+                    if (row3.indexOf(c) < 0) { break;}
+                    if (j == words[i].length() - 1) {result.add(words[i]);}
+                }
+            }
+        }
+        return result.toArray(new String[result.size()]);
+    }
+}
+
+size() or length
+test case "a"
+ArrayList.toArray
+String s = new String("")
+new String[0]; empty array
